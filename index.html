@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOLFSaaS - Living off Free SaaS</title>
+<link rel="icon" href="lolfsaas_logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#06080c; --s:#0c1018; --s2:#141a24; --bd:#1a2030; --bdA:#dc2626;
+  --tx:#e2e8f0; --txD:#a0aec0; --txM:#718096;
+  --red:#dc2626; --rG:rgba(220,38,38,0.08); --rB:rgba(220,38,38,0.2);
+  --green:#10b981; --gB:rgba(16,185,129,0.1);
+  --yellow:#eab308; --yB:rgba(234,179,8,0.1);
+  --blue:#3b82f6; --bB:rgba(59,130,246,0.1);
+  --purple:#a78bfa; --orange:#f97316; --cyan:#06b6d4; --cB:rgba(6,182,212,0.08);
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'JetBrains Mono',monospace}
+body{background:var(--bg);color:var(--tx);font-family:var(--mono);min-height:100vh}
+a{color:var(--red);text-decoration:none}
+button{font-family:var(--mono)}
+.badge{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:600;font-family:var(--mono);letter-spacing:.04em}
+.chip{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:3px;font-size:10px;font-family:var(--mono);font-weight:500;cursor:pointer;transition:all .1s;border:1px solid var(--bd);background:transparent;color:var(--txM)}
+.chip.active{background:var(--activeGlow);color:var(--activeColor);border-color:var(--activeBorder)}
+.chip .dot{font-size:7px}
+.nav-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:5px;border:1px solid var(--bd);background:var(--s);color:var(--txD);text-decoration:none;font-family:var(--mono);font-size:10px;font-weight:500;transition:all .15s}
+.nav-btn:hover{border-color:var(--txM);color:var(--tx)}
+table{width:100%;border-collapse:collapse;min-width:1300px}
+th{padding:8px;text-align:left;font-size:9px;font-family:var(--mono);font-weight:600;color:var(--txM);letter-spacing:.06em;cursor:pointer;background:var(--bg);position:sticky;top:0;z-index:2;user-select:none;text-transform:uppercase;white-space:nowrap}
+td{padding:7px 6px;border-bottom:1px solid var(--bd);font-size:10px;font-family:var(--mono);vertical-align:top}
+tr:hover td{background:rgba(220,38,38,0.02)}
+tr.sel td{background:var(--rG);border-bottom-color:var(--rB)}
+.detail{margin-top:12px;background:var(--s);border:1px solid var(--rB);border-radius:8px;padding:18px;animation:slideUp .15s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.container{position:relative;z-index:1;max-width:1600px;margin:0 auto;padding:24px 16px;animation:fadeIn .5s}
+.panel-card{background:var(--bg);border-radius:6px;padding:12px;border:1px solid var(--bd)}
+.panel-label{font-size:9px;color:var(--txM);font-family:var(--mono);margin-bottom:6px;letter-spacing:.06em}
+.auth-badge{display:inline-block;padding:0 3px;border-radius:2px;font-size:8px;font-family:var(--mono);font-weight:600}
+.auth-on{background:rgba(59,130,246,0.12);color:var(--blue);border:1px solid rgba(59,130,246,0.2);opacity:1}
+.auth-off{background:transparent;color:var(--txM);border:1px solid rgba(74,85,104,0.15);opacity:0.3}
+/* Scrollbars */
+.table-scroll{scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.table-scroll::-webkit-scrollbar{width:8px;height:8px}
+.table-scroll::-webkit-scrollbar-track{background:transparent}
+.table-scroll::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
+.table-scroll::-webkit-scrollbar-thumb:hover{background:var(--txM)}
+.table-scroll::-webkit-scrollbar-corner{background:transparent}
+/* Fullscreen overlay */
+.overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(6,8,12,0.92);backdrop-filter:blur(4px);overflow-y:auto;animation:fadeIn .2s}
+.overlay-inner{max-width:1000px;margin:0 auto;padding:24px 16px}
+.overlay .table-scroll{scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+</style>
+</head>
+<body>
+<div class="container" id="app">Loading...</div>
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const h = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const ABUSE_TYPES = [{key:"phishing",label:"Phishing",icon:"P"},{key:"c2",label:"C2",icon:"C"},{key:"exfil",label:"Exfil",icon:"E"},{key:"payload",label:"Payload",icon:"L"},{key:"creds",label:"Creds",icon:"K"}];
+const OPSEC_LEVELS = ["low","medium","high"];
+const SIGNUP_OPTS = [{key:"none",label:"None",c:"green"},{key:"email",label:"Email",c:"cyan"},{key:"email+cc",label:"Email+CC",c:"yellow"},{key:"email+phone",label:"Email+Phone",c:"orange"},{key:"phone",label:"Phone",c:"red"},{key:"trial",label:"Trial",c:"purple"},{key:"dev",label:"Dev",c:"blue"}];
+const AUTH_KEYS = [["saml","S"],["oidc","O"],["scim","C"],["oauth","A"],["mfa","M"]];
+
+let DATA=[], state={search:"",cats:new Set(),abuseF:new Set(),signupF:new Set(),opsecF:new Set(),authF:new Set(),trustOnly:false,dfOnly:false,c2Only:false,showFilters:false,sortK:"name",sortD:"asc",sel:null};
+
+function slug(name){return encodeURIComponent(name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-_.()]/g,''))}
+function selectService(name){state.sel=name;history.replaceState(null,null,'#'+slug(name));render()}
+function closeService(){state.sel=null;history.replaceState(null,null,window.location.pathname);render()}
+function getSelEntry(){if(!state.sel)return null;return DATA.find(d=>d.name===state.sel)||null}
+function loadFromHash(){const hash=decodeURIComponent(window.location.hash.slice(1));if(!hash)return;const entry=DATA.find(d=>slug(d.name)===hash||d.name===hash);if(entry)state.sel=entry.name}
+
+function tog(set,val){set.has(val)?set.delete(val):set.add(val);render()}
+function clearAll(){state.search="";state.cats.clear();state.abuseF.clear();state.signupF.clear();state.opsecF.clear();state.authF.clear();state.trustOnly=false;state.dfOnly=false;state.c2Only=false;render()}
+function doSort(k){state.sortD=state.sortK===k&&state.sortD==="asc"?"desc":"asc";state.sortK=k;render()}
+
+const ORDINAL={trust:{high:4,medium:3,low:2,none:1},opsec:{low:1,medium:2,high:3},banRisk:{low:1,medium:2,high:3},socDetection:{unlikely:1,moderate:2,likely:3},domainFronting:{true:2,false:1}};
+
+function getFiltered(){
+  let r=[...DATA];
+  const s=state.search.toLowerCase();
+  if(s)r=r.filter(i=>(i.name+i.category+i.provider+i.notes+i.domains.join(" ")+i.opsecNotes+(i.sso?.notes||"")+i.mitre.join(" ")).toLowerCase().includes(s));
+  if(state.cats.size)r=r.filter(i=>state.cats.has(i.category));
+  if(state.abuseF.size)r=r.filter(i=>[...state.abuseF].some(k=>i.abuse[k]));
+  if(state.signupF.size)r=r.filter(i=>state.signupF.has(i.signup));
+  if(state.opsecF.size)r=r.filter(i=>state.opsecF.has(i.opsec));
+  if(state.authF.size)r=r.filter(i=>[...state.authF].every(p=>i.sso?.[p]));
+  if(state.trustOnly)r=r.filter(i=>i.trustedDomain);
+  if(state.dfOnly)r=r.filter(i=>i.domainFronting);
+  if(state.c2Only)r=r.filter(i=>i.knownC2.length>0);
+  const sk=state.sortK;
+  r.sort((a,b)=>{let va,vb;if(ORDINAL[sk]){va=ORDINAL[sk][String(a[sk])]||0;vb=ORDINAL[sk][String(b[sk])]||0}else{va=a[sk];vb=b[sk];if(typeof va==='boolean'){va=va?1:0;vb=vb?1:0}if(typeof va==='string')va=va.toLowerCase();if(typeof vb==='string')vb=vb.toLowerCase();if(Array.isArray(va))va=va.length;if(Array.isArray(vb))vb=vb.length}if(va<vb)return state.sortD==="asc"?-1:1;if(va>vb)return state.sortD==="asc"?1:-1;return 0});
+  return r;
+}
+
+function badgeHTML(txt,color){return `<span class="badge" style="background:${color}15;color:${color};border:1px solid ${color}30">${h(txt)}</span>`}
+function sortArrow(k){return state.sortK===k?(state.sortD==="asc"?" ▲":" ▼"):""}
+
+function chipHTML(label,active,onclick,color="var(--red)"){
+  return `<button class="chip${active?" active":""}" style="${active?`--activeGlow:${color}18;--activeColor:${color};--activeBorder:${color}40`:""}" onclick="${onclick}"><span class="dot">${active?"●":"○"}</span> ${h(label)}</button>`;
+}
+
+function render(){
+  const filtered=getFiltered();
+  const cats=[...new Set(DATA.map(d=>d.category))].sort();
+  const catCounts={};cats.forEach(c=>catCounts[c]=DATA.filter(d=>d.category===c).length);
+  const hasF=state.search||state.cats.size||state.abuseF.size||state.signupF.size||state.opsecF.size||state.authF.size||state.trustOnly||state.dfOnly||state.c2Only;
+  const stats={total:DATA.length,noSign:DATA.filter(d=>d.signup==="none").length,trusted:DATA.filter(d=>d.trustedDomain).length,c2fw:DATA.filter(d=>d.knownC2.length>0).length,totalC2:DATA.reduce((a,d)=>a+d.knownC2.length,0)};
+
+  let html=`
+  <nav style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:0 2px;flex-wrap:wrap;gap:10px">
+    <a href="https://github.com/lolfsaas/lolfsaas.github.io" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <img src="lolfsaas_logo.png" width="38" height="38" style="border-radius:8px" alt="LOLFSaaS">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--tx);line-height:1.1">LOLF<span style="color:var(--red)">SaaS</span></div>
+        <div style="font-size:8px;color:var(--txM);letter-spacing:.08em">Living off Free SaaS</div>
+      </div>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <a class="nav-btn" href="https://github.com/lolfsaas/lolfsaas.github.io" target="_blank" title="GitHub Repository">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      <a class="nav-btn" href="https://lolc2.github.io" target="_blank" title="lolc2" onmouseover="this.style.borderColor='#dc2626';this.style.color='#dc2626'" onmouseout="this.style.borderColor='';this.style.color=''">
+        <img src="https://lolc2.github.io/lolc2.png" width="16" height="16" style="border-radius:2px" alt="lolc2">lolc2</a>
+      <a class="nav-btn" href="https://lolexfil.github.io" target="_blank" title="lolexfil" onmouseover="this.style.borderColor='#f97316';this.style.color='#f97316'" onmouseout="this.style.borderColor='';this.style.color=''">
+        <img src="https://lolexfil.github.io/logo.png" width="16" height="16" style="border-radius:2px" alt="lolexfil">lolexfil</a>
+      <a class="nav-btn" href="https://lots-project.com" target="_blank" title="LOTS" onmouseover="this.style.borderColor='#eab308';this.style.color='#eab308'" onmouseout="this.style.borderColor='';this.style.color=''">
+        <img src="https://lots-project.com/css/images/main.png" width="16" height="16" style="border-radius:2px" alt="LOTS">LOTS</a>
+    </div>
+  </nav>
+
+  <header style="text-align:center;margin-bottom:28px">
+    <h1 style="font-family:var(--mono);font-size:26px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em">Living off <span style="color:var(--red)">Free SaaS</span></h1>
+    <p style="color:var(--txD);font-size:12px;max-width:750px;margin:0 auto 16px;line-height:1.6">
+      Comprehensive directory of Free SaaS platforms - with known C2 frameworks, exfiltration tools, MITRE ATT&amp;CK mappings, OPSEC ratings, API endpoints, free tier limits, detection patterns, SSO data, and official documentation.
+      Cross-referenced with <a href="https://lolc2.github.io" target="_blank">lolc2</a> and <a href="https://lolexfil.github.io" target="_blank">lolexfil</a>.
+    </p>
+    <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap">
+      ${[{n:stats.total,l:"Services",c:"var(--tx)"},{n:stats.noSign,l:"No Signup",c:"var(--green)"},{n:stats.trusted,l:"Trusted Domains",c:"var(--yellow)"},{n:stats.c2fw,l:"C2 Services",c:"var(--red)"},{n:stats.totalC2,l:"C2 Frameworks",c:"var(--red)"}].map(s=>`<div><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:${s.c}">${s.n}</div><div style="font-size:9px;color:var(--txM);letter-spacing:.06em;font-family:var(--mono)">${s.l}</div></div>`).join("")}
+    </div>
+  </header>
+
+  <div style="background:var(--s);border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:14px">
+    <div style="display:flex;gap:8px;${state.showFilters?"margin-bottom:10px":""}; flex-wrap:wrap">
+      <div style="flex:1;min-width:200px;position:relative">
+        <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--txM);font-size:13px">⌕</span>
+        <input id="searchInput" value="${h(state.search)}" placeholder="Search services, domains, SSO, TTPs..."
+          style="width:100%;padding:7px 8px 7px 26px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-family:var(--mono);font-size:11px;outline:none;box-sizing:border-box">
+      </div>
+      <button onclick="state.showFilters=!state.showFilters;render()" style="padding:7px 12px;border-radius:5px;border:1px solid ${state.showFilters?"var(--red)40":"var(--bd)"};background:${state.showFilters?"var(--rG)":"var(--bg)"};color:${state.showFilters?"var(--red)":"var(--txD)"};cursor:pointer;font-family:var(--mono);font-size:10px;display:flex;align-items:center;gap:4px">
+        <span style="font-size:9px">${state.showFilters?"▼":"▶"}</span> Filters ${hasF?'<span style="background:var(--red);color:#fff;border-radius:8px;padding:0 5px;font-size:8px;font-weight:700">ON</span>':""}
+      </button>
+      ${hasF?'<button onclick="clearAll()" style="padding:7px 12px;border-radius:5px;border:1px solid var(--bd);background:var(--bg);color:var(--red);cursor:pointer;font-family:var(--mono);font-size:10px">✕ Clear</button>':""}
+    </div>
+    ${state.showFilters?`
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">
+      ${cats.map(c=>chipHTML(`${c} (${catCounts[c]})`,state.cats.has(c),`tog(state.cats,'${c}')`,`var(--cyan)`)).join("")}
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+      <span style="font-size:9px;color:var(--txM);font-family:var(--mono);letter-spacing:.06em;min-width:42px">ABUSE:</span>
+      ${ABUSE_TYPES.map(a=>chipHTML(`${a.icon} ${a.label}`,state.abuseF.has(a.key),`tog(state.abuseF,'${a.key}')`)).join("")}
+      <span style="color:var(--bd);margin:0 2px">│</span>
+      <span style="font-size:9px;color:var(--txM);font-family:var(--mono);letter-spacing:.06em">OPSEC:</span>
+      ${OPSEC_LEVELS.map(o=>chipHTML(o.toUpperCase(),state.opsecF.has(o),`tog(state.opsecF,'${o}')`,o==="low"?"var(--green)":o==="medium"?"var(--yellow)":"var(--red)")).join("")}
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+      <span style="font-size:9px;color:var(--txM);font-family:var(--mono);letter-spacing:.06em;min-width:42px">SIGNUP:</span>
+      ${SIGNUP_OPTS.map(s=>chipHTML(s.label,state.signupF.has(s.key),`tog(state.signupF,'${s.key}')`,`var(--${s.c})`)).join("")}
+      <span style="color:var(--bd);margin:0 2px">│</span>
+      ${chipHTML("Trusted Only",state.trustOnly,"state.trustOnly=!state.trustOnly;render()","var(--yellow)")}
+      ${chipHTML("Domain Fronting",state.dfOnly,"state.dfOnly=!state.dfOnly;render()","var(--purple)")}
+      ${chipHTML("Has C2 Framework",state.c2Only,"state.c2Only=!state.c2Only;render()","var(--red)")}
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:9px;color:var(--txM);font-family:var(--mono);letter-spacing:.06em;min-width:42px">AUTH:</span>
+      ${AUTH_KEYS.map(([k,l])=>chipHTML(l,state.authF.has(k),`tog(state.authF,'${k}')`,`var(--blue)`)).join("")}
+    </div>
+    `:""}
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;padding:0 2px">
+    <span style="font-size:10px;color:var(--txD)">${filtered.length} / ${DATA.length} services</span>
+    
+  </div>
+
+  <div style="background:var(--s);border:1px solid var(--bd);border-radius:8px;overflow:hidden">
+    <div class="table-scroll" style="overflow:auto;max-height:calc(100vh - 120px)">
+      <table>
+        <thead><tr style="border-bottom:1px solid var(--bd)">
+          <th onclick="doSort('name')">Service${sortArrow("name")}</th>
+          <th onclick="doSort('category')">Cat${sortArrow("category")}</th>
+          <th onclick="doSort('signup')">Signup${sortArrow("signup")}</th>
+          <th onclick="doSort('trust')">Trust${sortArrow("trust")}</th>
+          <th>Abuse</th>
+          <th style="white-space:normal" onclick="doSort('opsec')">OPSEC<br>Risk${sortArrow("opsec")}</th>
+          <th style="white-space:normal" onclick="doSort('socDetection')">SOC<br>Detection${sortArrow("socDetection")}</th>
+          <th style="white-space:normal" onclick="doSort('banRisk')">Ban<br>Risk${sortArrow("banRisk")}</th>
+          <th style="white-space:normal" onclick="doSort('domainFronting')">Domain<br>Fronting${sortArrow("domainFronting")}</th>
+          <th>Auth</th>
+          <th onclick="doSort('knownC2')">C2s${sortArrow("knownC2")}</th>
+          <th style="white-space:normal">Free<br>Tier</th>
+          <th>Limits</th>
+          <th>Notes</th>
+        </tr></thead>
+        <tbody>
+          ${filtered.map((app,i)=>{
+            const trustM={high:{c:"var(--green)",l:"HIGH"},medium:{c:"var(--yellow)",l:"MED"},low:{c:"var(--txM)",l:"LOW"},none:{c:"var(--red)",l:"NONE"}};
+            const t=trustM[app.trust||"low"]||trustM.low;
+            const socM={likely:{c:"var(--red)",l:"LIKELY"},moderate:{c:"var(--yellow)",l:"MODERATE"},unlikely:{c:"var(--green)",l:"UNLIKELY"}};
+            const sd=socM[app.socDetection||"unlikely"]||socM.unlikely;
+            const banM={high:{c:"var(--red)",l:"HIGH"},medium:{c:"var(--yellow)",l:"MED"},low:{c:"var(--green)",l:"LOW"}};
+            const bn=banM[app.banRisk||"low"]||banM.low;
+            const opsM={low:{c:"var(--green)",l:"LOW"},medium:{c:"var(--yellow)",l:"MED"},high:{c:"var(--red)",l:"HIGH"}};
+            const op=opsM[app.opsec||"low"]||opsM.low;
+            const ft=app.freeTier||{};
+            const ftc=ft.type==="free"?"var(--green)":ft.type==="trial"?"var(--yellow)":"var(--red)";
+            const ftl=ft.type==="free"?"FREE":ft.type==="trial"?(ft.trialDays?`TRIAL ${ft.trialDays}d`:"TRIAL"):"PAID";
+            return `<tr class="${state.sel===app.name?"sel":""}" onclick="selectService('${app.name.replace(/'/g,"\\'")}')" style="cursor:pointer">
+              <td style="font-weight:600;font-size:11px;color:var(--tx);white-space:nowrap">${h(app.name)}</td>
+              <td><span class="badge" style="background:var(--cB);color:var(--cyan);border:1px solid rgba(6,182,212,0.15);font-size:9px">${h(app.category)}</span></td>
+              <td style="font-size:9px;color:var(--txD)">${h(app.signup)}</td>
+              <td>${badgeHTML(t.l,t.c)}</td>
+              <td><div style="display:flex;gap:2px;flex-wrap:wrap">${ABUSE_TYPES.map(a=>`<span style="display:inline-block;padding:0 3px;border-radius:2px;font-size:8px;font-weight:600;background:${app.abuse[a.key]?"rgba(220,38,38,0.12)":"transparent"};color:${app.abuse[a.key]?"var(--red)":"var(--txM)"};border:1px solid ${app.abuse[a.key]?"rgba(220,38,38,0.2)":"rgba(74,85,104,0.15)"};opacity:${app.abuse[a.key]?1:.3}">${a.label}</span>`).join("")}</div></td>
+              <td>${badgeHTML(op.l,op.c)}</td>
+              <td>${badgeHTML(sd.l,sd.c)}</td>
+              <td>${badgeHTML(bn.l,bn.c)}</td>
+              <td style="text-align:center"><span style="color:${app.domainFronting?"var(--purple)":"var(--txM)"};font-size:9px">${app.domainFronting?"Yes":"-"}</span></td>
+              <td><div style="display:flex;gap:2px;flex-wrap:wrap">${AUTH_KEYS.map(([k,l])=>{const names={saml:"SAML",oidc:"OIDC",scim:"SCIM",oauth:"OAuth",mfa:"MFA"};return `<span style="display:inline-block;padding:0 3px;border-radius:2px;font-size:8px;font-weight:600;background:${app.sso?.[k]?"rgba(59,130,246,0.12)":"transparent"};color:${app.sso?.[k]?"var(--blue)":"var(--txM)"};border:1px solid ${app.sso?.[k]?"rgba(59,130,246,0.2)":"rgba(74,85,104,0.15)"};opacity:${app.sso?.[k]?1:.3}">${names[k]}</span>`}).join("")}</div></td>
+              <td style="text-align:center">${app.knownC2.length>0?badgeHTML(String(app.knownC2.length),"var(--red)"):'<span style="color:var(--txM);font-size:9px">-</span>'}</td>
+              <td>${badgeHTML(ftl,ftc)}${ft.devAccount?'<span style="font-size:8px;color:var(--purple);margin-left:3px">DEV</span>':""}</td>
+              <td><div style="font-size:9px;color:var(--txD);line-height:1.3">${h((ft.limits||"").slice(0,60))}${(ft.limits||"").length>60?"…":""}</div></td>
+              <td><div style="font-size:9px;color:var(--txM);line-height:1.3">${h(app.notes.slice(0,80))}${app.notes.length>80?"…":""}</div></td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+
+  // Detail overlay (fullscreen)
+  if(state.sel){
+    const sel=getSelEntry();
+    if(sel){
+      const shareUrl=window.location.origin+window.location.pathname+'#'+slug(sel.name);
+      const issueUrl=`https://github.com/lolfsaas/lolfsaas.github.io/issues/new?title=${encodeURIComponent(`[Update] ${sel.name}`)}&body=${encodeURIComponent(`## Platform\n**Name:** ${sel.name}\n**URL:** ${sel.url}\n**Category:** ${sel.category}\n\n## What needs updating?\n- [ ] Free tier limits changed\n- [ ] Signup requirements changed\n- [ ] New abuse technique\n- [ ] New C2 framework\n- [ ] New exfiltration tool\n- [ ] SOC detection info\n- [ ] Ban risk / enforcement change\n- [ ] Auth protocol info\n- [ ] Other\n\n## Details\n\n\n## Source / Reference\n`)}&labels=update,community`;
+      html+=`<div class="overlay" onclick="if(event.target===this)closeService()">
+        <div class="overlay-inner">
+          <div style="background:var(--s);border:1px solid var(--rB);border-radius:8px;padding:24px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+              <div>
+                <h2 style="font-size:22px;font-weight:700;margin:0 0 4px;color:var(--red)">${h(sel.name)}</h2>
+                <span style="font-size:12px;color:var(--txD)">${h(sel.provider)} · ${h(sel.category)} · <a href="${h(sel.url)}" target="_blank">${h(sel.url)} →</a></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <button onclick="navigator.clipboard.writeText('${shareUrl}');this.textContent='Copied!';setTimeout(()=>this.textContent='Share link',1500)" style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;border:1px solid var(--bd);background:var(--bg);color:var(--txD);cursor:pointer;font-size:9px" onmouseover="this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='';this.style.color=''">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                  Share link</button>
+                <a href="${issueUrl}" target="_blank" style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;border:1px solid var(--bd);background:var(--bg);color:var(--txD);text-decoration:none;font-size:9px" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='';this.style.color=''">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Contribute</a>
+                <button onclick="closeService()" style="background:none;border:none;color:var(--txM);cursor:pointer;font-size:20px;padding:0 4px">✕</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+              <div class="panel-card">
+                <div class="panel-label">ACCESS & OPSEC</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <div style="font-size:10px"><span style="color:var(--txM)">Signup:</span> <span style="color:var(--tx)">${h(sel.signup)} (${h(sel.signupTime)})</span></div>
+                  <div style="font-size:10px"><span style="color:var(--txM)">OPSEC Risk:</span> ${badgeHTML(sel.opsec.toUpperCase(),sel.opsec==="low"?"var(--green)":sel.opsec==="medium"?"var(--yellow)":"var(--red)")}</div>
+                  <div style="font-size:10px;color:var(--txD)">${h(sel.opsecNotes)}</div>
+                  <div style="font-size:10px"><span style="color:var(--txM)">Domains:</span> <span style="font-size:9px;color:var(--tx)">${sel.domains.map(d=>h(d)).join(", ")}</span></div>
+                  <div style="font-size:10px"><span style="color:var(--txM)">Trusted Domain:</span> <span style="color:${sel.trustedDomain?"var(--green)":"var(--txM)"}">${sel.trustedDomain?"Yes":"No"}</span></div>
+                  <div style="font-size:10px"><span style="color:var(--txM)">Domain Fronting:</span> <span style="color:${sel.domainFronting?"var(--purple)":"var(--txM)"}">${sel.domainFronting?"Supported":"No"}</span>${sel.domainFrontingNotes?` <span style="font-size:9px;color:var(--txD)">- ${h(sel.domainFrontingNotes)}</span>`:""}</div>
+                  <div style="font-size:10px"><span style="color:var(--txM)">Custom Domain:</span> <span style="color:${sel.customDomain?"var(--green)":"var(--txM)"}">${sel.customDomain?"Yes":"No"}</span>${sel.customDomainNotes?` <span style="font-size:9px;color:var(--txD)">- ${h(sel.customDomainNotes)}</span>`:""}</div>
+                  ${sel.verification?`<div style="font-size:9px;color:var(--txD)">Verification: ${h(sel.verification)}</div>`:""}
+                  ${sel.banRisk?`<div style="font-size:9px;color:${sel.banRisk==="high"?"var(--red)":sel.banRisk==="medium"?"var(--yellow)":"var(--green)"}">Ban risk: ${sel.banRisk.toUpperCase()} - ${h(sel.banNotes||"")}</div>`:""}
+                  ${sel.lastVerified?`<div style="font-size:9px;color:var(--txM)">Last verified: ${h(sel.lastVerified)}</div>`:""}
+                </div>
+              </div>
+              <div class="panel-card">
+                <div class="panel-label">ABUSE SURFACE</div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  ${ABUSE_TYPES.map(a=>`<div style="font-size:10px"><span style="color:${sel.abuse[a.key]?"var(--red)":"var(--txM)"}"> ${sel.abuse[a.key]?"✓":"✗"} ${a.label}</span></div>`).join("")}
+                </div>
+                <div class="panel-label" style="margin-top:10px">AUTH PROTOCOLS</div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  ${[["saml","SAML"],["oidc","OIDC"],["scim","SCIM"],["oauth","OAuth"],["mfa","MFA"]].map(([k,l])=>`<div style="font-size:10px"><span style="color:${sel.sso?.[k]?"var(--green)":"var(--txM)"}"> ${sel.sso?.[k]?"✓":"✗"} ${l}</span></div>`).join("")}
+                  ${sel.sso?.notes?`<div style="font-size:9px;color:var(--txD);margin-top:4px">${h(sel.sso.notes)}</div>`:""}
+                </div>
+              </div>
+              <div class="panel-card">
+                <div class="panel-label">FREE TIER & ACCESS</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <div style="font-size:10px">${badgeHTML(sel.freeTier.type==="free"?"FREE":sel.freeTier.type==="trial"?"TRIAL":"PAID",sel.freeTier.type==="free"?"var(--green)":sel.freeTier.type==="trial"?"var(--yellow)":"var(--red)")} ${sel.freeTier.devAccount?'<span style="font-size:9px;color:var(--purple)">DEV ACCOUNT</span>':""}</div>
+                  <div style="font-size:10px;color:var(--txD)">${h(sel.freeTier.limits||"")}</div>
+                </div>
+              </div>
+              <div class="panel-card">
+                <div class="panel-label">OPERATIONAL LIMITS</div>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <div style="font-size:10px"><span style="color:var(--txM)">Rate Limits:</span> <span style="color:var(--tx)">${h(sel.rateLimits||"N/A")}</span></div>
+                  <div style="font-size:10px"><span style="color:var(--txM)">Max File Size:</span> <span style="color:var(--tx)">${h(sel.maxFileSize||"N/A")}</span></div>
+                  <div style="font-size:10px"><span style="color:var(--txM)">Data Retention:</span> <span style="color:var(--tx)">${h(sel.dataRetention||"N/A")}</span></div>
+                </div>
+              </div>
+              <div class="panel-card">
+                <div class="panel-label">PLATFORM LOGGING</div>
+                <div style="font-size:10px;color:var(--txD)">${h(sel.logging||"No information")}</div>
+              </div>
+              <div class="panel-card">
+                <div class="panel-label">C2 FRAMEWORKS (${sel.knownC2.length})</div>
+                ${sel.knownC2.length?sel.knownC2.map(c=>`<div style="margin-bottom:3px"><a href="${h(c.url)}" target="_blank" style="font-size:10px;color:var(--red)">${h(c.name)} →</a></div>`).join(""):'<div style="font-size:10px;color:var(--txM)">No known C2 frameworks</div>'}
+                ${sel.exfilTools?.length?`<div class="panel-label" style="margin-top:8px">EXFIL TOOLS (${sel.exfilTools.length})</div>${sel.exfilTools.map(t=>`<div style="margin-bottom:3px"><a href="${h(t.url)}" target="_blank" style="font-size:10px;color:var(--orange)">${h(t.name)} →</a></div>`).join("")}`:""}
+              </div>
+            </div>
+            <div style="margin-top:12px">
+              <div class="panel-label">NOTES & REFERENCES</div>
+              <p style="font-size:11px;color:var(--tx);margin:0 0 8px;line-height:1.6">${h(sel.notes)}</p>
+              ${sel.mitre?.length?`<div style="margin-bottom:6px">${sel.mitre.map(m=>`<a href="https://attack.mitre.org/techniques/${m.replace(".","/")}" target="_blank" style="display:inline-block;padding:1px 5px;border-radius:2px;background:rgba(167,139,250,0.1);color:var(--purple);border:1px solid rgba(167,139,250,0.2);font-size:9px;margin:0 3px 3px 0">${h(m)}</a>`).join("")}</div>`:""}
+              ${sel.refs?.length?`<div>${sel.refs.map(r=>`<div style="margin-bottom:3px"><a href="${h(r.url)}" target="_blank" style="font-size:10px;color:var(--txD)">${h(r.title)} →</a></div>`).join("")}</div>`:""}
+              ${sel.detection?.length?`<div style="margin-top:6px"><span class="panel-label">DETECTION PATTERNS</span><div style="font-size:9px;color:var(--orange)">${sel.detection.map(d=>h(d)).join(" · ")}</div></div>`:""}
+              ${sel.apiEndpoints?.length?`<div style="margin-top:6px"><span class="panel-label">API ENDPOINTS</span><div style="font-size:9px;color:var(--cyan)">${sel.apiEndpoints.map(d=>h(d)).join(" · ")}</div></div>`:""}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+  }
+
+  // Footer
+  html+=`<footer style="text-align:center;padding:24px 0 16px;color:var(--txM);font-size:10px;font-family:var(--mono)">
+    LOLFSaaS · Living off Free SaaS · ${DATA.length} platforms · Cross-referenced with lolc2 · lolexfil · LOTS
+    <br>Community contributions welcome.
+  </footer>`;
+
+  $("#app").innerHTML=html;
+
+  // Bind search input
+  const si=$("#searchInput");
+  if(si){si.addEventListener("input",e=>{state.search=e.target.value;render()});si.focus();si.setSelectionRange(si.value.length,si.value.length)}
+}
+
+// Keyboard: ESC to close overlay
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&state.sel){closeService()}});
+// Hash change: back button support
+window.addEventListener("hashchange",()=>{const hash=decodeURIComponent(window.location.hash.slice(1));if(!hash){state.sel=null;render()}else{const entry=DATA.find(d=>slug(d.name)===hash||d.name===hash);if(entry){state.sel=entry.name;render()}}});
+
+// Load data and start
+fetch("data.json").then(r=>r.json()).then(d=>{DATA=d;loadFromHash();render()}).catch(e=>{$("#app").innerHTML=`<p style="color:var(--red);text-align:center;padding:40px">Error loading data.json: ${e.message}</p>`});
+</script>
+</body>
+</html>
