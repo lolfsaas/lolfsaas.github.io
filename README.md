@@ -23,6 +23,8 @@
 
 ---
 
+[lolfsaas.github.io](https://lolfsaas.github.io/)
+
 ## Why LOLFSaaS?
 
 Threat actors increasingly abuse legitimate SaaS platforms for phishing, C2, exfiltration, and payload hosting because the traffic blends with normal business activity. Defenders need to know which services are abused and how. Red teamers need to pick the right platform for the job without guessing.
