@@ -1650,7 +1650,7 @@
     "customDomainNotes": "N/A - messaging platform",
     "dataRetention": "Permanent (messages). CDN links expire after 24h since 2023. Webhook: write-only, no read-back",
     "rateLimits": "50 req/s global. Webhook: 30 msg/min/channel",
-    "maxFileSize": "25MB file upload free. 500MB with Nitro",
+    "maxFileSize": "10MB file upload free. 50MB with Nitro Basic / 500MB Nitro",
     "logging": "Audit log for server admins. Message content accessible by Discord"
   },
   {
