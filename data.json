@@ -1648,8 +1648,8 @@
     "notes": "12 lolc2 C2 frameworks. CDN links expire after 24h since 2023 - use webhooks instead. Webhooks: write-only, free, no auth needed - just URL possession. Supply chain attacks via webhooks in npm/PyPI/Ruby (Socket 2025). ChaosBot: Rust-based malware using Discord channels for C2 (eSentire 2025). Discord is 'commodity C2 as a service' - free infra, TLS to trusted domain, bypasses firewalls. Hijacked invite links for multi-stage malware delivery (Check Point 2025). Setting up Discord C2 is simpler than expected, even low-skilled TAs can do it (CYFIRMA)",
     "customDomain": false,
     "customDomainNotes": "N/A - messaging platform",
-    "dataRetention": "Messages persistent until deleted. CDN links are signed and expire (not fixed 24h). Webhooks are write-only"
-    "rateLimits": "Per-route rate limits. Global ~50 req/s per token (soft). Webhooks: ~5 requests / 2 seconds per webhook"
+    "dataRetention": "Messages persistent until deleted. CDN links are signed and expire (not fixed 24h). Webhooks are write-only",
+    "rateLimits": "Per-route rate limits. Global ~50 req/s per token (soft). Webhooks: ~5 requests / 2 seconds per webhook",
     "maxFileSize": "10MB file upload free. 50MB with Nitro Basic / 500MB Nitro",
     "logging": "Audit log for server admins. Message content accessible by Discord"
   },
