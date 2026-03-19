@@ -1528,12 +1528,12 @@
     "banNotes": "Active abuse detection. Webhooks flagged for malware distribution. CDN now scoped. Accounts banned for TOS violations",
     "verification": "Email required. Phone required for some servers. Captcha on signup",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
       "trialDays": null,
-      "limits": "Unlimited webhooks \u00b7 25MB file upload (50MB Nitro) \u00b7 50 servers \u00b7 Bot API free"
+      "limits": "Unlimited webhooks \u00b7 10MB file upload (50MB Nitro Basic / 500MB Nitro) \u00b7 100 servers \u00b7 Bot API free"
     },
     "sso": {
       "saml": false,
