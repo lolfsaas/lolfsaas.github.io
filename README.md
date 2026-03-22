@@ -6,7 +6,7 @@
 <h3 align="center">Living off Free SaaS</h3>
 
 <p align="center">
-  A curated directory of <b>127 SaaS platforms</b> with free tiers, documenting abuse surface, OPSEC profiles, detection patterns, C2 framework mappings, and operational limits for security research.
+  A curated directory of <b>127 SaaS platforms</b> with free tiers, documenting abuse surface, OPSEC profiles, detection logics, C2 framework mappings, and operational limits for security research.
 </p>
 
 <p align="center">
@@ -52,7 +52,7 @@ Every entry is cross-referenced with [lolc2](https://lolc2.github.io), [lolexfil
 | Domain fronting / CDN redirection | 6 |
 | C2 framework implementations linked | 124 |
 | Exfiltration tool mappings | 122 |
-| Platforms with detection patterns | 127 |
+| Platforms with detection logics | 127 |
 | MITRE ATT&CK mappings | 127 |
 | Threat intel references | 306 |
 
