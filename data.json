@@ -164,14 +164,30 @@
         "url": "https://argv.cloud/blog/2025/red-team-infrastructure-setup/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.s3.amazonaws.com",
+      "*.s3.*.amazonaws.com",
+      "*.execute-api.*.amazonaws.com",
+      "*.lambda-url.*.on.aws",
+      "*.cloudfront.net",
+      "email-smtp.*.amazonaws.com",
+      "ses.*.amazonaws.com",
+      "s3.amazonaws.com/*/",
+      "CloudTrail: GetObject|PutObject|ListBucket spikes",
+      "CloudTrail: sts:AssumeRole from unusual sources",
+      "GuardDuty: Exfiltration:S3/* findings",
+      "GuardDuty: UnauthorizedAccess:IAMUser/* findings",
+      "VPC Flow Logs: large outbound transfers to S3 endpoints",
+      "DNS: high-entropy subdomains (DNS exfil via Route53)"
+    ],
     "notes": "Lambda@Edge + CloudFront as C2 redirector (replaces classic domain fronting blocked 2018). Full red team infra on AWS: Mythic C2 + CloudFront + ALB + Nginx redirector (Argv.Cloud). C2 hosting requires prior approval form (Simulated Events). Blob storage on S3 for payload hosting - not scanned on upload. SES for phishing at scale (sandbox: verified recipients only). 12-month free tier covers most red team needs",
     "customDomain": true,
     "customDomainNotes": "Route53 + CloudFront custom domains free with account",
     "dataRetention": "Permanent (S3)",
     "rateLimits": "Varies per service. S3 5500 GET/s per prefix. Lambda 1000 concurrent",
     "maxFileSize": "5TB per object (S3)",
-    "logging": "CloudTrail logs all API calls. GuardDuty anomaly detection. VPC Flow Logs"
+    "logging": "CloudTrail logs all API calls. GuardDuty anomaly detection. VPC Flow Logs",
+    "lolc2Url": "https://lolc2.github.io/#aws-x-ray"
   },
   {
     "name": "Azure (Functions/Blob/CDN)",
@@ -377,7 +393,8 @@
     "dataRetention": "Permanent (Blob)",
     "rateLimits": "Functions: 100 concurrent. Blob: 20k req/s per account",
     "maxFileSize": "4.75TB block blob",
-    "logging": "Activity Log, Diagnostic Logs, Sentinel, Defender for Cloud"
+    "logging": "Activity Log, Diagnostic Logs, Sentinel, Defender for Cloud",
+    "lolc2Url": "https://lolc2.github.io/#microsoft-azure-functions"
   },
   {
     "name": "Google Cloud (GCF/GCS/Firebase)",
@@ -583,7 +600,16 @@
         "url": "https://docs.oracle.com/en-us/iaas/Content/Identity/home.htm"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.oraclecloud.com",
+      "*.ocp.oraclecloud.com",
+      "objectstorage.*.oraclecloud.com",
+      "*.oci.oraclecloud.com",
+      "*.functions.oci.oraclecloud.com",
+      "*.apigateway.*.oci.customer-oci.com",
+      "cloud.oracle.com",
+      "idcs-*.identity.oraclecloud.com"
+    ],
     "notes": "Best always-free tier for persistent red team infra. 2 VMs + 4 ARM cores that never expire. Far less scrutinized than AWS/Azure by SOCs and threat intel feeds",
     "customDomain": true,
     "customDomainNotes": "Custom domains on OCI services",
@@ -658,7 +684,17 @@
         "url": "https://lolexfil.github.io"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.ondigitalocean.app",
+      "*.digitaloceanspaces.com",
+      "*.sfo2.digitaloceanspaces.com",
+      "*.nyc3.digitaloceanspaces.com",
+      "*.ams3.digitaloceanspaces.com",
+      "api.digitalocean.com",
+      "cloud.digitalocean.com",
+      "*.do.co",
+      "registry.digitalocean.com"
+    ],
     "notes": "S3-compatible Spaces for exfil staging, droplets for C2 infra. $200 credit = 2 months of free infrastructure. Less monitored than hyperscalers",
     "customDomain": true,
     "customDomainNotes": "Custom domains on Droplets, App Platform",
@@ -793,7 +829,8 @@
     "dataRetention": "Permanent (R2, Pages)",
     "rateLimits": "Workers: 100k req/day free. R2: 1M class A ops/mo free",
     "maxFileSize": "5GB per object (R2). 25MB Worker script",
-    "logging": "Workers analytics. No detailed request logging on free tier"
+    "logging": "Workers analytics. No detailed request logging on free tier",
+    "lolc2Url": "https://lolc2.github.io/#cloudflare"
   },
   {
     "name": "Heroku",
@@ -850,7 +887,16 @@
         "url": "https://www.heroku.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.herokuapp.com",
+      "*.herokucdn.com",
+      "*.herokudns.com",
+      "api.heroku.com",
+      "*.herokuapp.com/api/*",
+      "addons-sso.heroku.com",
+      "dashboard.heroku.com",
+      "CNAME dangling: 'No such app' response from herokuapp.com"
+    ],
     "notes": "Salesforce-owned trusted domain. No longer free but still quick to deploy. *.herokuapp.com trusted by most proxy/email filters",
     "customDomain": true,
     "customDomainNotes": "Custom domains on paid dynos only ($5/mo minimum)",
@@ -918,7 +964,17 @@
         "url": "https://vercel.com/docs/security/single-sign-on"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.vercel.app",
+      "*.now.sh",
+      "*.vercel.sh",
+      "api.vercel.com",
+      "vercel.com/api/*",
+      "*.vercel-dns.com",
+      "edge-config.vercel.com",
+      "vitals.vercel-insights.com",
+      "va.vercel-scripts.com"
+    ],
     "notes": "Instant deploy from Git push. Serverless functions for payload redirectors. Custom domains free. Clean *.vercel.app URLs",
     "customDomain": true,
     "customDomainNotes": "Free custom domains on all plans",
@@ -982,7 +1038,18 @@
         "url": "https://www.netlify.com/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.netlify.app",
+      "*.netlify.com",
+      "*.netlify.live",
+      "api.netlify.com",
+      "app.netlify.com",
+      "functions.netlify.com",
+      "*.netlifyglobalcdn.com",
+      "d33wubrfki0l68.cloudfront.net",
+      "_redirects file abuse (302 chains via netlify.app)",
+      "CNAME dangling: Netlify 'Page not found' on unclaimed subdomain"
+    ],
     "notes": "Quick static site hosting for phishing pages. Serverless functions for redirectors. Custom domains free. Deploy in <30 seconds from Git",
     "customDomain": true,
     "customDomainNotes": "Free custom domains with automatic HTTPS",
@@ -1047,7 +1114,25 @@
         "url": "https://ngrok.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.ngrok.io",
+      "*.ngrok.app",
+      "*.ngrok-free.app",
+      "*.ngrok.com",
+      "tunnel.us.ngrok.com",
+      "tunnel.eu.ngrok.com",
+      "tunnel.ap.ngrok.com",
+      "tcp.ngrok.io",
+      "connect.ngrok-agent.com",
+      "dns.ngrok-dns.com",
+      "update.equinox.io",
+      "Process: ngrok.exe or ngrok binary on endpoint",
+      "User-Agent: ngrok/* in HTTP headers",
+      "DNS queries to *.ngrok.io or *.ngrok-free.app",
+      "MITRE ATT&CK S0508 (ngrok software entry)",
+      "Splunk: Network Resolution for *.ngrok.com|*.ngrok.io",
+      "96% of ngrok C2 is njRAT + Nanocore RAT (MalwarePatrol)"
+    ],
     "notes": "Instant tunnel to expose local C2 listener. HIGH OPSEC RISK - ngrok domains are IOCs in most threat intel feeds. Use trycloudflare.com instead for zero-signup tunnels",
     "customDomain": false,
     "customDomainNotes": "Custom domains on paid plans only",
@@ -1187,7 +1272,8 @@
     "dataRetention": "Permanent (repos, gists, releases)",
     "rateLimits": "5000 req/hr authenticated API. 60 unauthenticated. Actions 2000 min/mo",
     "maxFileSize": "100MB per file. 2GB release asset. 10GB repo soft limit",
-    "logging": "Audit log on Enterprise. Security log on personal account"
+    "logging": "Audit log on Enterprise. Security log on personal account",
+    "lolc2Url": "https://lolc2.github.io/#github"
   },
   {
     "name": "GitLab (Pages/Snippets/CI)",
@@ -1258,7 +1344,18 @@
         "url": "https://docs.gitlab.com/ee/user/group/saml_sso/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.gitlab.io",
+      "*.gitlab.com",
+      "gitlab.com/api/v4/*",
+      "gitlab.com/api/v4/snippets/*",
+      "gitlab.com/api/v4/projects/*/repository/files/*",
+      "gitlab.com/api/v4/projects/*/jobs/artifacts/*",
+      "registry.gitlab.com",
+      "*.pages.dev.gitlab.io",
+      "gitlab.com/-/snippets/*",
+      "gitlab.com/*/raw/*"
+    ],
     "notes": "Less SOC coverage than GitHub. Snippets for dead drops. CI/CD pipelines for automated payload delivery. Pages for phishing",
     "customDomain": true,
     "customDomainNotes": "GitLab Pages supports free custom domains",
@@ -1338,7 +1435,17 @@
         "url": "https://research.checkpoint.com/2025/from-trust-to-threat-hijacked-discord-invites-used-for-multi-stage-malware-delivery/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.bitbucket.io",
+      "*.bitbucket.org",
+      "api.bitbucket.org/2.0/*",
+      "api.bitbucket.org/2.0/repositories/*/downloads/*",
+      "api.bitbucket.org/2.0/snippets/*",
+      "bitbucket.org/*/downloads/*",
+      "bitbucket.org/*/raw/*",
+      "bitbucket.org/*/src/*",
+      "Skuld Stealer payload hosting via bitbucket.org/*/downloads (Check Point 2025)"
+    ],
     "notes": "Trusted Atlassian domain. Static site hosting via Bitbucket Cloud. Pipelines for CI/CD automation",
     "customDomain": false,
     "customDomainNotes": "No free custom domains",
@@ -1493,7 +1600,8 @@
     "dataRetention": "Permanent (cloud-based)",
     "rateLimits": "Bot API: 30 msg/s. getUpdates: 100 msg/call",
     "maxFileSize": "2GB per file (Bot API)",
-    "logging": "No admin audit logs. Telegram can see unencrypted chats"
+    "logging": "No admin audit logs. Telegram can see unencrypted chats",
+    "lolc2Url": "https://lolc2.github.io/#telegram"
   },
   {
     "name": "Discord",
@@ -1528,12 +1636,12 @@
     "banNotes": "Active abuse detection. Webhooks flagged for malware distribution. CDN now scoped. Accounts banned for TOS violations",
     "verification": "Email required. Phone required for some servers. Captcha on signup",
     "trust": "high",
-    "lastVerified": "2026-03",
+    "lastVerified": "2025-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
       "trialDays": null,
-      "limits": "Unlimited webhooks \u00b7 10MB file upload (50MB Nitro Basic / 500MB Nitro) \u00b7 100 servers \u00b7 Bot API free"
+      "limits": "Unlimited webhooks \u00b7 25MB file upload (50MB Nitro) \u00b7 50 servers \u00b7 Bot API free"
     },
     "sso": {
       "saml": false,
@@ -1648,10 +1756,11 @@
     "notes": "12 lolc2 C2 frameworks. CDN links expire after 24h since 2023 - use webhooks instead. Webhooks: write-only, free, no auth needed - just URL possession. Supply chain attacks via webhooks in npm/PyPI/Ruby (Socket 2025). ChaosBot: Rust-based malware using Discord channels for C2 (eSentire 2025). Discord is 'commodity C2 as a service' - free infra, TLS to trusted domain, bypasses firewalls. Hijacked invite links for multi-stage malware delivery (Check Point 2025). Setting up Discord C2 is simpler than expected, even low-skilled TAs can do it (CYFIRMA)",
     "customDomain": false,
     "customDomainNotes": "N/A - messaging platform",
-    "dataRetention": "Messages persistent until deleted. CDN links are signed and expire (not fixed 24h). Webhooks are write-only",
-    "rateLimits": "Per-route rate limits. Global ~50 req/s per token (soft). Webhooks: ~5 requests / 2 seconds per webhook",
-    "maxFileSize": "10MB file upload free. 50MB with Nitro Basic / 500MB Nitro",
-    "logging": "Audit log for server admins. Message content accessible by Discord"
+    "dataRetention": "Permanent (messages). CDN links expire after 24h since 2023. Webhook: write-only, no read-back",
+    "rateLimits": "50 req/s global. Webhook: 30 msg/min/channel",
+    "maxFileSize": "25MB file upload free. 500MB with Nitro",
+    "logging": "Audit log for server admins. Message content accessible by Discord",
+    "lolc2Url": "https://lolc2.github.io/#discord"
   },
   {
     "name": "Slack",
@@ -1797,7 +1906,8 @@
     "dataRetention": "Free: 90 days message retention (since 2022)",
     "rateLimits": "Webhook: 1 msg/s. API: tier-based (20-100 req/min)",
     "maxFileSize": "1GB file storage free workspace total",
-    "logging": "Audit logs on Enterprise Grid. Analytics on Pro"
+    "logging": "Audit logs on Enterprise Grid. Analytics on Pro",
+    "lolc2Url": "https://lolc2.github.io/#slack"
   },
   {
     "name": "Microsoft Teams",
@@ -1894,7 +2004,8 @@
     "dataRetention": "Retention per org policy (default: permanent)",
     "rateLimits": "Connector webhook: 4 msg/s",
     "maxFileSize": "250MB per file",
-    "logging": "M365 Audit Log, Compliance Center, eDiscovery"
+    "logging": "M365 Audit Log, Compliance Center, eDiscovery",
+    "lolc2Url": "https://lolc2.github.io/#microsoft-teams"
   },
   {
     "name": "Twitter / X",
@@ -1997,7 +2108,8 @@
     "dataRetention": "Permanent (public tweets)",
     "rateLimits": "API Basic: 100 tweets/read/mo. Free: 1500 tweets/write/mo",
     "maxFileSize": "N/A",
-    "logging": "No audit logs for users"
+    "logging": "No audit logs for users",
+    "lolc2Url": "https://lolc2.github.io/#twitter"
   },
   {
     "name": "Gmail / Google Workspace",
@@ -2105,7 +2217,8 @@
     "dataRetention": "Permanent (15GB shared with Drive)",
     "rateLimits": "Gmail API: 250 quota units/s",
     "maxFileSize": "25MB attachment. 10GB via Drive link",
-    "logging": "Workspace Audit Logs, Alert Center. Admin SDK Reports API"
+    "logging": "Workspace Audit Logs, Alert Center. Admin SDK Reports API",
+    "lolc2Url": "https://lolc2.github.io/#gmail"
   },
   {
     "name": "Microsoft Outlook",
@@ -2210,7 +2323,8 @@
     "dataRetention": "Permanent (M365 retention policies)",
     "rateLimits": "Graph API: 10k req/10min",
     "maxFileSize": "150MB attachment (Outlook)",
-    "logging": "M365 Audit Logs, Compliance Center"
+    "logging": "M365 Audit Logs, Compliance Center",
+    "lolc2Url": "https://lolc2.github.io/#microsoft-outlook"
   },
   {
     "name": "Microsoft Graph API",
@@ -2347,7 +2461,8 @@
     "dataRetention": "Depends on underlying service",
     "rateLimits": "10k req/10min per app",
     "maxFileSize": "Varies by endpoint",
-    "logging": "M365 Audit Logs for all Graph API calls"
+    "logging": "M365 Audit Logs for all Graph API calls",
+    "lolc2Url": "https://lolc2.github.io/#microsoft-graph"
   },
   {
     "name": "Microsoft Power Automate",
@@ -2424,7 +2539,8 @@
     "dataRetention": "Depends on connected services",
     "rateLimits": "Flow runs: 750/day free",
     "maxFileSize": "N/A",
-    "logging": "Power Platform admin center. Flow run history"
+    "logging": "Power Platform admin center. Flow run history",
+    "lolc2Url": "https://lolc2.github.io/#microsoft-power-automate"
   },
   {
     "name": "OneDrive / SharePoint",
@@ -2566,7 +2682,8 @@
     "dataRetention": "Permanent (5GB free OneDrive)",
     "rateLimits": "Graph API limits apply",
     "maxFileSize": "250GB per file",
-    "logging": "M365 Audit Logs, DLP policies"
+    "logging": "M365 Audit Logs, DLP policies",
+    "lolc2Url": "https://lolc2.github.io/#onedrive"
   },
   {
     "name": "YouTube",
@@ -2654,7 +2771,8 @@
     "dataRetention": "Permanent (videos)",
     "rateLimits": "YouTube Data API: 10k units/day",
     "maxFileSize": "256GB or 12hr per video",
-    "logging": "YouTube Studio analytics. No API audit logs"
+    "logging": "YouTube Studio analytics. No API audit logs",
+    "lolc2Url": "https://lolc2.github.io/#youtube"
   },
   {
     "name": "Reddit",
@@ -2735,7 +2853,8 @@
     "dataRetention": "Permanent (posts)",
     "rateLimits": "OAuth API: 60 req/min. 100 listing items",
     "maxFileSize": "20MB image. 1GB video",
-    "logging": "No audit logs for users. Mod logs per subreddit"
+    "logging": "No audit logs for users. Mod logs per subreddit",
+    "lolc2Url": "https://lolc2.github.io/#reddit"
   },
   {
     "name": "Instagram",
@@ -2815,7 +2934,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "Graph API: 200 calls/hr",
     "maxFileSize": "N/A",
-    "logging": "No audit logs"
+    "logging": "No audit logs",
+    "lolc2Url": "https://lolc2.github.io/#instagram"
   },
   {
     "name": "Notion",
@@ -2907,7 +3027,8 @@
     "dataRetention": "Permanent (free: 7 day page history)",
     "rateLimits": "API: 3 req/s",
     "maxFileSize": "5MB per file block",
-    "logging": "Audit log on Enterprise"
+    "logging": "Audit log on Enterprise",
+    "lolc2Url": "https://lolc2.github.io/#notion"
   },
   {
     "name": "Zoom",
@@ -2993,7 +3114,8 @@
     "dataRetention": "Cloud recordings: varies by plan",
     "rateLimits": "API: 30 req/s heavy, 80 req/s light",
     "maxFileSize": "N/A",
-    "logging": "Admin dashboard on paid plans"
+    "logging": "Admin dashboard on paid plans",
+    "lolc2Url": "https://lolc2.github.io/#zoom"
   },
   {
     "name": "Google Calendar",
@@ -3078,7 +3200,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "Calendar API: 1M queries/day",
     "maxFileSize": "N/A",
-    "logging": "Workspace Audit Logs"
+    "logging": "Workspace Audit Logs",
+    "lolc2Url": "https://lolc2.github.io/#google-calendar"
   },
   {
     "name": "Google Drive",
@@ -3225,7 +3348,8 @@
     "dataRetention": "Permanent (15GB free shared)",
     "rateLimits": "Drive API: 12k queries/day",
     "maxFileSize": "5TB per file",
-    "logging": "Workspace Audit Logs, Drive activity"
+    "logging": "Workspace Audit Logs, Drive activity",
+    "lolc2Url": "https://lolc2.github.io/#google-drive"
   },
   {
     "name": "Google Sheets",
@@ -3314,7 +3438,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "Sheets API: 300 req/min per project",
     "maxFileSize": "10M cells per spreadsheet",
-    "logging": "Workspace Audit Logs"
+    "logging": "Workspace Audit Logs",
+    "lolc2Url": "https://lolc2.github.io/#google-sheet"
   },
   {
     "name": "Google Slides",
@@ -3391,7 +3516,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "Slides API: 300 req/min",
     "maxFileSize": "N/A",
-    "logging": "Workspace Audit Logs"
+    "logging": "Workspace Audit Logs",
+    "lolc2Url": "https://lolc2.github.io/#google-slides"
   },
   {
     "name": "Google Translate",
@@ -3470,7 +3596,8 @@
     "dataRetention": "No data stored",
     "rateLimits": "No explicit rate limit for web. API: 600k chars/min",
     "maxFileSize": "5k chars per request (web)",
-    "logging": "No logging for anonymous use"
+    "logging": "No logging for anonymous use",
+    "lolc2Url": "https://lolc2.github.io/#google-translate"
   },
   {
     "name": "Dropbox",
@@ -3599,7 +3726,8 @@
     "dataRetention": "Permanent (2GB free)",
     "rateLimits": "API: 200 calls/min data. 600 calls/min metadata",
     "maxFileSize": "2GB free, 50GB per file on paid",
-    "logging": "Admin console on Business. Activity logs"
+    "logging": "Admin console on Business. Activity logs",
+    "lolc2Url": "https://lolc2.github.io/#dropbox"
   },
   {
     "name": "VirusTotal",
@@ -3689,7 +3817,8 @@
     "dataRetention": "Permanent (all uploads)",
     "rateLimits": "API: 4 req/min free. 1000 req/day",
     "maxFileSize": "650MB per file",
-    "logging": "All uploads are public and permanently stored"
+    "logging": "All uploads are public and permanently stored",
+    "lolc2Url": "https://lolc2.github.io/#virustotal"
   },
   {
     "name": "Zulip",
@@ -3772,7 +3901,8 @@
     "dataRetention": "Permanent (self-hosted: unlimited)",
     "rateLimits": "API: 200 req/min",
     "maxFileSize": "25MB per file (cloud)",
-    "logging": "No audit logs on free cloud"
+    "logging": "No audit logs on free cloud",
+    "lolc2Url": "https://lolc2.github.io/#zulip"
   },
   {
     "name": "Matrix",
@@ -3860,7 +3990,8 @@
     "dataRetention": "Permanent (self-hosted: unlimited)",
     "rateLimits": "Varies by homeserver. matrix.org rate limited",
     "maxFileSize": "100MB per file (matrix.org)",
-    "logging": "Homeserver admin logs. No central audit"
+    "logging": "Homeserver admin logs. No central audit",
+    "lolc2Url": "https://lolc2.github.io/#matrix"
   },
   {
     "name": "OpenAI / ChatGPT",
@@ -3943,7 +4074,8 @@
     "dataRetention": "Files: 60 days retention",
     "rateLimits": "API: tier-based. Free: 3 RPM, 200 RPD",
     "maxFileSize": "512MB per file (API)",
-    "logging": "Usage dashboard. Organization audit log"
+    "logging": "Usage dashboard. Organization audit log",
+    "lolc2Url": "https://lolc2.github.io/#openai"
   },
   {
     "name": "Claude / Anthropic",
@@ -4027,7 +4159,8 @@
     "dataRetention": "No file retention stated",
     "rateLimits": "API: tier-based. 5 RPM on free tier",
     "maxFileSize": "32MB per file (API)",
-    "logging": "Usage dashboard"
+    "logging": "Usage dashboard",
+    "lolc2Url": "https://lolc2.github.io/#claude"
   },
   {
     "name": "Mastodon",
@@ -4106,7 +4239,8 @@
     "dataRetention": "Permanent (self-hosted)",
     "rateLimits": "API: 300 req/5min",
     "maxFileSize": "40MB video, 10MB image",
-    "logging": "Admin dashboard per instance"
+    "logging": "Admin dashboard per instance",
+    "lolc2Url": "https://lolc2.github.io/#mastodon"
   },
   {
     "name": "WhatsApp",
@@ -4182,7 +4316,8 @@
     "dataRetention": "Permanent (cloud backup optional)",
     "rateLimits": "Business API: 80 msg/s. Yowsup detected",
     "maxFileSize": "2GB per file",
-    "logging": "No audit logs"
+    "logging": "No audit logs",
+    "lolc2Url": "https://lolc2.github.io/#whatsapp"
   },
   {
     "name": "Strava",
@@ -4260,7 +4395,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "API: 100 req/15min, 1000/day",
     "maxFileSize": "N/A",
-    "logging": "No audit logs"
+    "logging": "No audit logs",
+    "lolc2Url": "https://lolc2.github.io/#strava"
   },
   {
     "name": "Lichess",
@@ -4340,7 +4476,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "API: 1 req/s authenticated",
     "maxFileSize": "N/A",
-    "logging": "No audit logs"
+    "logging": "No audit logs",
+    "lolc2Url": "https://lolc2.github.io/#lichess"
   },
   {
     "name": "Spotify",
@@ -4419,7 +4556,8 @@
     "dataRetention": "Permanent (playlists)",
     "rateLimits": "API: rate limited per endpoint",
     "maxFileSize": "N/A",
-    "logging": "No audit logs"
+    "logging": "No audit logs",
+    "lolc2Url": "https://lolc2.github.io/#spotify"
   },
   {
     "name": "SoundCloud",
@@ -4499,7 +4637,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "API: rate limited",
     "maxFileSize": "5GB free upload",
-    "logging": "No audit logs"
+    "logging": "No audit logs",
+    "lolc2Url": "https://lolc2.github.io/#soundcloud"
   },
   {
     "name": "DuckDuckGo",
@@ -4573,7 +4712,8 @@
     "dataRetention": "No data stored",
     "rateLimits": "No explicit rate limit",
     "maxFileSize": "N/A",
-    "logging": "No logging by design"
+    "logging": "No logging by design",
+    "lolc2Url": "https://lolc2.github.io/#duckduckgo"
   },
   {
     "name": "Asana",
@@ -4656,7 +4796,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "API: 150 req/min",
     "maxFileSize": "100MB per attachment",
-    "logging": "Audit log on Enterprise"
+    "logging": "Audit log on Enterprise",
+    "lolc2Url": "https://lolc2.github.io/#asana"
   },
   {
     "name": "Jira",
@@ -4739,7 +4880,8 @@
     "dataRetention": "Permanent",
     "rateLimits": "API: rate limited per user",
     "maxFileSize": "250MB per attachment",
-    "logging": "Audit log on Premium+"
+    "logging": "Audit log on Premium+",
+    "lolc2Url": "https://lolc2.github.io/#jira"
   },
   {
     "name": "Cisco Webex",
@@ -4822,7 +4964,8 @@
     "dataRetention": "Retention per org policy",
     "rateLimits": "API: 100 req/min",
     "maxFileSize": "100MB per file",
-    "logging": "Compliance Officer role, eDiscovery on Pro Pack"
+    "logging": "Compliance Officer role, eDiscovery on Pro Pack",
+    "lolc2Url": "https://lolc2.github.io/#cisco-webex"
   },
   {
     "name": "Mattermost",
@@ -4906,7 +5049,8 @@
     "dataRetention": "Permanent (self-hosted)",
     "rateLimits": "API: 10 req/s default",
     "maxFileSize": "50MB per file default",
-    "logging": "Compliance exports on Enterprise"
+    "logging": "Compliance exports on Enterprise",
+    "lolc2Url": "https://lolc2.github.io/#mattermost"
   },
   {
     "name": "Splunk",
@@ -4971,14 +5115,25 @@
         "url": "https://lolc2.github.io"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.splunkcloud.com",
+      "*.cloud.splunk.com",
+      "api.splunkcloud.com",
+      "input-*.cloud.splunk.com",
+      "http-inputs-*.splunkcloud.com",
+      "*.splunk.com",
+      "SplunkHEC: HTTP Event Collector endpoints (port 8088)",
+      "Splunk API: /services/collector/event",
+      "Splunk Universal Forwarder: TCP 9997 outbound"
+    ],
     "notes": "1 lolc2 C2 framework (SplunkWhisperer2). Abuses Splunk Deployment Server for remote code execution. Post-compromise: admin access = complete visibility into target's security logs. Ironic - the SIEM becomes the C2",
     "customDomain": false,
     "customDomainNotes": "N/A - SIEM platform",
     "dataRetention": "Dev license: 500MB/day",
     "rateLimits": "API: no hard limit",
     "maxFileSize": "N/A",
-    "logging": "Ironically - Splunk IS the audit log"
+    "logging": "Ironically - Splunk IS the audit log",
+    "lolc2Url": "https://lolc2.github.io/#splunk"
   },
   {
     "name": "Google Forms",
@@ -5041,7 +5196,15 @@
         "url": "https://www.google.com/forms/about/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "docs.google.com/forms/*",
+      "docs.google.com/forms/d/e/*/viewform",
+      "docs.google.com/forms/d/e/*/formResponse",
+      "forms.gle/*",
+      "forms.google.com",
+      "POST to /formResponse with entry.* parameters (credential harvesting)",
+      "Phishing: embedded Google Forms in emails with pre-filled fields"
+    ],
     "notes": "Credential harvesting on trusted Google domain. Impossible to block docs.google.com without breaking business. Response notifications for real-time credential capture",
     "customDomain": false,
     "customDomainNotes": "N/A - form builder",
@@ -5106,7 +5269,15 @@
         "url": "https://www.microsoft.com/en-us/microsoft-365/online-surveys-polls-quizzes"
       }
     ],
-    "detection": [],
+    "detection": [
+      "forms.office.com",
+      "forms.microsoft.com",
+      "*.officeForms.microsoftonline.com",
+      "forms.office.com/Pages/ResponsePage.aspx?id=*",
+      "forms.office.com/r/*",
+      "M365 Audit Log: FormCreated, FormResponded events",
+      "POST to /formapi/api/* with response data (credential harvesting)"
+    ],
     "notes": "Credential harvesting on trusted Microsoft domain. forms.office.com is universally trusted by email filters and proxies",
     "customDomain": false,
     "customDomainNotes": "N/A - form builder",
@@ -5170,7 +5341,14 @@
         "url": "https://sway.office.com/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "sway.office.com",
+      "sway.cloud.microsoft.com",
+      "sway.office.com/*/embed",
+      "*.sway.com",
+      "Sway pages used as phishing landing pages with embedded forms",
+      "M365 Audit Log: SwayCreated, SwayEdited events"
+    ],
     "notes": "Embed redirects and credential capture pages on sway.office.com. Very popular for AiTM phishing campaigns. Trusted by all email security gateways",
     "customDomain": false,
     "customDomainNotes": "N/A - content creation",
@@ -5234,7 +5412,14 @@
         "url": "https://sites.google.com/new"
       }
     ],
-    "detection": [],
+    "detection": [
+      "sites.google.com",
+      "sites.google.com/view/*",
+      "sites.google.com/*/p/*",
+      "*.googlesites.com",
+      "Phishing: Google Sites pages impersonating login portals",
+      "Google Workspace Audit Log: sites.create, sites.edit events"
+    ],
     "notes": "Highly trusted Google domain. Iframe support for embedding attacker-controlled content. Very popular for AiTM phishing landing pages. Cannot be blocked without breaking Google",
     "customDomain": false,
     "customDomainNotes": "N/A - website builder",
@@ -5307,7 +5492,22 @@
         "url": "https://support.docusign.com/s/articles/How-to-configure-SSO-for-DocuSign"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.docusign.com",
+      "*.docusign.net",
+      "app.docusign.com",
+      "na2.docusign.net",
+      "na3.docusign.net",
+      "na4.docusign.net",
+      "eu.docusign.net",
+      "au.docusign.net",
+      "demo.docusign.net",
+      "account-d.docusign.com",
+      "Envelopes API abuse: POST /restapi/v2.1/accounts/*/envelopes (fake invoice generation)",
+      "Spoofed sender: dse_na*.docusign.net vs legitimate docusign.net",
+      "Legitimate emails contain 32-char security code - absence is phishing indicator",
+      "Maestro workflow notifications abused for fake invoice scams (DocuSign trust alert 2025)"
+    ],
     "notes": "Signing request emails are NEVER blocked by email security. Developer account gives free API access for programmatic phishing. Universally trusted brand for BEC",
     "customDomain": false,
     "customDomainNotes": "N/A - e-signature",
@@ -5390,7 +5590,21 @@
         "url": "https://lolexfil.github.io"
       }
     ],
-    "detection": [],
+    "detection": [
+      "mega.nz",
+      "mega.io",
+      "mega.co.nz",
+      "api.mega.co.nz",
+      "g.api.mega.co.nz",
+      "*.userstorage.mega.co.nz",
+      "Sigma rule: net_connection_win_domain_mega_nz (Florian Roth)",
+      "Sigma rule: dns_query_win_mega_nz (upload subdomain detection)",
+      "Process: MEGAsync.exe or megacmd.exe (often renamed by ransomware actors)",
+      "Process: rclone.exe with mega: remote config (Conti, World Leaks, etc.)",
+      "Non-browser process connecting to mega.co.nz = high confidence exfil indicator",
+      "T1567.002: Exfiltration to Cloud Storage (MITRE)",
+      "Mandiant: Russian APTs use mega.nz for payload hosting"
+    ],
     "notes": "E2E encrypted storage defeats DLP inspection. 20GB free. MEGAcmd + rclone for automated exfil. Encryption is the key advantage over other cloud storage",
     "customDomain": false,
     "customDomainNotes": "N/A - encrypted storage",
@@ -5454,7 +5668,15 @@
         "url": "https://wetransfer.com/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "wetransfer.com",
+      "*.wetransfer.com",
+      "we.tl",
+      "storageow.wetransfer.com",
+      "prod-stor-we.wetransfer.net",
+      "Phishing: spoofed WeTransfer 'download your files' notification emails",
+      "Large outbound uploads to wetransfer.com (exfil indicator)"
+    ],
     "notes": "Zero signup required. Payload delivery via trusted WeTransfer email notifications. 2GB transfers. Files auto-expire in 7 days for OPSEC",
     "customDomain": false,
     "customDomainNotes": "N/A - file transfer",
@@ -5526,7 +5748,15 @@
         "url": "https://gofile.io/api"
       }
     ],
-    "detection": [],
+    "detection": [
+      "gofile.io",
+      "*.gofile.io",
+      "store*.gofile.io",
+      "api.gofile.io",
+      "api.gofile.io/createFolder",
+      "api.gofile.io/uploadFile",
+      "Malware staging: gofile.io/d/* download links in phishing payloads"
+    ],
     "notes": "Zero signup, anonymous file uploads. API for automation. Direct download links. curl one-liner for quick exfil staging",
     "customDomain": false,
     "customDomainNotes": "N/A - file hosting",
@@ -5628,7 +5858,8 @@
     "dataRetention": "Configurable (never to 1 day)",
     "rateLimits": "API: 1 paste/10min free. 250/day Pro",
     "maxFileSize": "512KB per paste free",
-    "logging": "Public pastes indexed by search engines"
+    "logging": "Public pastes indexed by search engines",
+    "lolc2Url": "https://lolc2.github.io/#pastebin"
   },
   {
     "name": "Okta",
@@ -5697,7 +5928,20 @@
         "url": "https://developer.okta.com/docs/concepts/saml/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.okta.com",
+      "*.oktapreview.com",
+      "*.okta-emea.com",
+      "login.okta.com",
+      "*.okta.com/api/v1/*",
+      "*.okta.com/oauth2/*",
+      "*.okta.com/app/*/sso/saml",
+      "Okta System Log: user.session.start from unusual IP/geo",
+      "Okta System Log: policy.evaluate_sign_on failures",
+      "Okta System Log: user.mfa.factor.deactivate (MFA fatigue/reset)",
+      "Okta System Log: user.account.reset_password (credential theft follow-up)",
+      "Scattered Spider TTPs: Okta admin impersonation via IT helpdesk social engineering"
+    ],
     "notes": "Free developer account for testing SSO attacks: SAML assertion manipulation, MFA push fatigue, session hijacking, org takeover. Full IdP with all auth protocols",
     "customDomain": true,
     "customDomainNotes": "Custom domains on paid plans",
@@ -5787,7 +6031,22 @@
         "url": "https://developer.microsoft.com/en-us/microsoft-365/dev-program"
       }
     ],
-    "detection": [],
+    "detection": [
+      "login.microsoftonline.com",
+      "login.microsoft.com",
+      "login.windows.net",
+      "graph.microsoft.com",
+      "*.onmicrosoft.com",
+      "aadcdn.msauth.net",
+      "aadcdn.msftauth.net",
+      "autologon.microsoftazuread-sso.com",
+      "Entra Sign-in Logs: unusual IP, impossible travel, legacy auth protocols",
+      "Entra Audit Logs: application consent grants to unknown apps",
+      "Entra Audit Logs: new service principal credentials added",
+      "Conditional Access: sign-ins bypassing CA policies",
+      "Token theft: refresh token replay from new device/IP",
+      "Adversary-in-the-Middle: Evilginx2/EvilProxy targeting login.microsoftonline.com"
+    ],
     "notes": "Primary target for cloud red team engagements. Golden SAML via STS, PRT abuse, device code phishing, illicit consent grants, pass-the-cookie. M365 Developer Program gives free E5 licenses for testing",
     "customDomain": true,
     "customDomainNotes": "Custom domains verifiable",
@@ -5852,7 +6111,15 @@
         "url": "https://www.loom.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.loom.com",
+      "www.loom.com/share/*",
+      "www.loom.com/embed/*",
+      "cdn.loom.com",
+      "loom.com/v/*",
+      "Phishing: Loom video links in spearphishing emails as 'video message' pretexts",
+      "Loom viewer analytics track who watched (OPSEC risk for targets)"
+    ],
     "notes": "Video share notifications bypass all email filters. 'Watch my quick video update' is an extremely effective phishing pretext. Trusted Atlassian-owned domain since 2023 acquisition",
     "customDomain": false,
     "customDomainNotes": "N/A - video messaging",
@@ -5918,7 +6185,14 @@
         "url": "https://calendly.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "calendly.com",
+      "*.calendly.com",
+      "calendly.com/api/*",
+      "calendly.com/*/invitees",
+      "Phishing: Calendly event links as meeting pretexts in spearphishing",
+      "Calendly form submissions used for credential/data collection"
+    ],
     "notes": "Scheduling links are universally trusted. Custom pre-meeting questions for credential harvesting. Redirect after booking for payload delivery. Mentioned in lolc2 candidates issue #6",
     "customDomain": false,
     "customDomainNotes": "N/A - scheduling",
@@ -6129,7 +6403,17 @@
         "url": "https://www.twilio.com/en-us/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.twilio.com",
+      "api.twilio.com",
+      "api.twilio.com/2010-04-01/Accounts/*/Messages.json",
+      "*.pstn.twilio.com",
+      "event-bridge.twilio.com",
+      "taskrouter.twilio.com",
+      "SMS originating from Twilio numbers (+1-xxx with Twilio carrier ID)",
+      "Smishing: bulk SMS via Twilio API for credential phishing",
+      "Twilio SendGrid relay for phishing email delivery"
+    ],
     "notes": "SMS/voice API for smishing and vishing. Trial messages prefixed with 'Sent from Twilio trial account'. Production requires identity verification and approved use case. $15 free credit",
     "customDomain": false,
     "customDomainNotes": "N/A - communications API",
@@ -6196,7 +6480,16 @@
         "url": "https://www.mailgun.com/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "api.mailgun.net",
+      "*.mailgun.org",
+      "api.mailgun.net/v3/*/messages",
+      "api.eu.mailgun.net",
+      "*.mg.mailgun.org",
+      "smtp.mailgun.org",
+      "Bulk email via Mailgun API for phishing delivery",
+      "X-Mailgun-* headers in received phishing emails"
+    ],
     "notes": "Email API alternative to SendGrid. Sandbox mode allows testing without domain verification. Custom domain support for phishing infrastructure. Requires CC at signup",
     "customDomain": true,
     "customDomainNotes": "Custom sending domains required for production",
@@ -6260,7 +6553,15 @@
         "url": "https://render.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.onrender.com",
+      "*.render.com",
+      "api.render.com",
+      "dashboard.render.com",
+      "*.web.render.com",
+      "Phishing/C2 hosting on *.onrender.com free subdomain",
+      "CNAME dangling: Render 'not found' on unclaimed subdomain"
+    ],
     "notes": "Heroku alternative with actual free web services. Deploy from Git push. Services spin down after 15min idle on free tier. Custom domains free. Good for disposable redirectors",
     "customDomain": true,
     "customDomainNotes": "Free custom domains with automatic HTTPS",
@@ -6493,7 +6794,16 @@
         "url": "https://www.linkedin.com/premium/products/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.linkedin.com",
+      "www.linkedin.com/messaging/*",
+      "www.linkedin.com/in/*",
+      "lnkd.in",
+      "media.licdn.com",
+      "LinkedIn InMail for spearphishing (OSINT + trusted sender)",
+      "LinkedIn Smart Links abuse: www.linkedin.com/slink?code=* redirecting to phishing",
+      "LinkedIn job posting lures for malware delivery (Lazarus APT Operation DreamJob)"
+    ],
     "notes": "lnkd.in shortlinks universally trusted by email filters and proxies. InMail bypasses spam filters entirely. Fake profiles for social engineering. Connection requests for initial trust building. Microsoft-owned domain",
     "customDomain": false,
     "customDomainNotes": "N/A - social platform",
@@ -6558,7 +6868,16 @@
         "url": "https://www.figma.com/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.figma.com",
+      "www.figma.com/proto/*",
+      "www.figma.com/design/*",
+      "www.figma.com/file/*",
+      "cdn.figma.com",
+      "Figma prototype pages as phishing landing pages (fake Microsoft login)",
+      "Storm-1747, Mamba, Gabagool: Figma abuse for credential phishing (ANY.RUN Oct 2025)",
+      "Figma 'shared document' email invitations leading to phishing flows"
+    ],
     "notes": "Sharing notifications as phishing pretexts: 'Check this design mockup'. Embed malicious links in interactive prototypes. Adobe-owned trusted domain. Mentioned in lolc2 candidates issue #6",
     "customDomain": false,
     "customDomainNotes": "N/A - design platform",
@@ -6648,7 +6967,8 @@
     "dataRetention": "Permanent (Firestore, Storage). Hosting deploys immutable",
     "rateLimits": "Firestore: 50k reads/day free. Functions: rate varies",
     "maxFileSize": "5MB per document (Firestore). 5GB Storage free",
-    "logging": "Firebase console analytics. Cloud Logging integration"
+    "logging": "Firebase console analytics. Cloud Logging integration",
+    "lolc2Url": "https://lolc2.github.io/#firebase"
   },
   {
     "name": "Salesforce",
@@ -6714,7 +7034,24 @@
         "url": "https://help.salesforce.com/s/articleView?id=sf.sso_saml.htm"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.salesforce.com",
+      "*.force.com",
+      "*.my.salesforce.com",
+      "*.lightning.force.com",
+      "*.visualforce.com",
+      "*.site.com",
+      "*.my.site.com",
+      "login.salesforce.com",
+      "*.salesforce.com/services/data/v*/query/*",
+      "*.salesforce.com/services/oauth2/token",
+      "Setup Audit Trail: ConnectedApp.Created, Login anomalies",
+      "OAuth token abuse: fake Data Loader connected apps (UNC6040 vishing)",
+      "Gainsight OAuth token compromise (ShinyHunters Nov 2025)",
+      "AuraInspector mass-scanning of Experience Cloud instances (ShinyHunters 2026)",
+      "Salesforce redirect abuse in phishing chains (Google Careers impersonation)",
+      "FBI IOCs: UNC6040/UNC6395 Salesforce supply chain campaign (Sept 2025)"
+    ],
     "notes": "Free developer edition forever with full API access. Connected app abuse for persistent OAuth access post-compromise. Apex triggers for automated actions. Community sites for phishing pages on trusted *.force.com domain",
     "customDomain": true,
     "customDomainNotes": "Custom domains on My Domain (free)",
@@ -6784,7 +7121,17 @@
         "url": "https://docs.servicenow.com/bundle/latest-platform-security/page/integrate/saml/concept/c_SAML2.0.html"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.service-now.com",
+      "*.servicenow.com",
+      "*.service-now.com/api/*",
+      "*.service-now.com/nav_to.do*",
+      "*.service-now.com/login.do",
+      "*.service-now.com/sys_attachment.do*",
+      "developer.servicenow.com",
+      "ServiceNow Audit: sys_audit table for login/data access anomalies",
+      "Phishing: ServiceNow ticket notification impersonation"
+    ],
     "notes": "Free developer instance with full platform access. Test ITSM workflow abuse, knowledge base data exposure, ACL bypass. Instance resets after 10 days of inactivity",
     "customDomain": false,
     "customDomainNotes": "N/A - ITSM",
@@ -6854,14 +7201,24 @@
         "url": "https://developer.atlassian.com/cloud/trello/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "trello.com",
+      "*.trello.com",
+      "api.trello.com/1/*",
+      "api.trello.com/1/boards/*",
+      "api.trello.com/1/cards/*",
+      "trello-attachments.s3.amazonaws.com",
+      "Trello public boards for C2 dead drops (card descriptions/comments)",
+      "Trello attachment URLs for payload hosting (S3-backed)"
+    ],
     "notes": "Board invite notifications for phishing pretexts. Card attachments for payload hosting. API for automated data exfil. Trusted Atlassian domain",
     "customDomain": false,
     "customDomainNotes": "N/A - kanban",
     "dataRetention": "Permanent",
     "rateLimits": "API: 100 req/10s per token",
     "maxFileSize": "10MB per attachment free",
-    "logging": "Audit log on Enterprise"
+    "logging": "Audit log on Enterprise",
+    "lolc2Url": "https://lolc2.github.io/#trello"
   },
   {
     "name": "Box",
@@ -6949,7 +7306,18 @@
         "url": "https://lolexfil.github.io"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.box.com",
+      "*.box.net",
+      "api.box.com",
+      "api.box.com/2.0/*",
+      "app.box.com/s/*",
+      "dl.boxcloud.com",
+      "upload.box.com",
+      "Box shared links (app.box.com/s/*) for payload delivery",
+      "Box API: bulk download/upload patterns indicating exfiltration",
+      "IBM X-Force: identity-pivot chains involving Box in SaaS attacks (2025)"
+    ],
     "notes": "10GB free. Enterprise-trusted domain. Share notifications for phishing. Full API for automation. rclone exfil target",
     "customDomain": false,
     "customDomainNotes": "N/A - file storage",
@@ -7016,7 +7384,18 @@
         "url": "https://www.canva.com/help/sso/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.canva.com",
+      "www.canva.com/design/*",
+      "www.canva.com/design/*/view",
+      "export-download.canva.com",
+      "media-private.canva.com",
+      "Canva design URLs as phishing stepping stones (redirect to credential harvesting)",
+      "Canva + Cloudflare Turnstile + fake Microsoft login chain (Abnormal AI 2025)",
+      "Canva pages with 'View Complete Document' button linking to external domains",
+      "Sublime Security: Canva abuse for ScreenConnect malware delivery via DocuSign impersonation",
+      "Cofense: Canva ~9% of all online document hosting services abused in 2024 credential phishing"
+    ],
     "notes": "Design shareable phishing materials and PDFs. Share notifications as pretexts. Trusted brand that bypasses email filters",
     "customDomain": false,
     "customDomainNotes": "N/A - design platform",
@@ -7080,7 +7459,15 @@
         "url": "https://www.typeform.com/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.typeform.com",
+      "form.typeform.com",
+      "*.typeform.com/to/*",
+      "admin.typeform.com",
+      "api.typeform.com",
+      "Phishing: Typeform surveys as credential harvesting forms",
+      "Typeform webhook integrations for exfiltrating submitted data"
+    ],
     "notes": "Professional forms for credential harvesting. Webhooks for real-time capture. Custom thank-you pages for payload redirect. Trusted domain",
     "customDomain": false,
     "customDomainNotes": "N/A - form builder",
@@ -7144,7 +7531,16 @@
         "url": "https://www.wix.com/upgrade/website"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.wixsite.com",
+      "*.wix.com",
+      "*.wixstatic.com",
+      "editor.wix.com",
+      "manage.wix.com",
+      "static.parastorage.com",
+      "Phishing pages hosted on *.wixsite.com free subdomains",
+      "Wix ADI for rapid phishing site generation"
+    ],
     "notes": "WYSIWYG phishing page builder. Trusted domain. Free hosting. Sites may be removed on abuse report",
     "customDomain": true,
     "customDomainNotes": "Custom domains on paid plans. Free: *.wixsite.com",
@@ -7211,7 +7607,17 @@
         "url": "https://wordpress.com/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.wordpress.com",
+      "*.wp.com",
+      "public-api.wordpress.com",
+      "s0.wp.com",
+      "s1.wp.com",
+      "s2.wp.com",
+      "*.files.wordpress.com",
+      "Phishing/malware staging on free *.wordpress.com blogs",
+      "WordPress.com REST API for programmatic content publishing"
+    ],
     "notes": "REST API usable for C2 dead drops. Custom themes for credential harvesting pages. *.wordpress.com universally trusted. Sites removed on abuse report",
     "customDomain": true,
     "customDomainNotes": "Custom domains on paid plans. Free: *.wordpress.com",
@@ -7275,7 +7681,15 @@
         "url": "https://webflow.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.webflow.io",
+      "*.webflow.com",
+      "api.webflow.com",
+      "assets.website-files.com",
+      "uploads-ssl.webflow.com",
+      "Phishing pages on *.webflow.io free subdomains",
+      "EvilProxy phishing kit abusing Webflow website builder (Barracuda Sept 2025)"
+    ],
     "notes": "Professional phishing pages with CMS API. Form submissions for credential capture. Custom animations for convincing clone sites",
     "customDomain": true,
     "customDomainNotes": "Custom domains on paid plans. Free: *.webflow.io",
@@ -7438,7 +7852,21 @@
         "url": "https://docs.sendgrid.com/api-reference"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.sendgrid.net",
+      "*.sendgrid.com",
+      "api.sendgrid.com",
+      "api.sendgrid.com/v3/mail/send",
+      "smtp.sendgrid.net",
+      "email.sendgrid.net",
+      "url*.sendgrid.net (click tracking redirects - abused as open redirectors)",
+      "o*.sendgrid.net (open tracking pixels)",
+      "X-SG-* headers in email (SendGrid origin indicator)",
+      "Cofense: SendGrid open redirectors abused for credential harvesting phishing chains",
+      "Kaseya: OpenAI invoice scam sent via compromised SendGrid account on openai.com domain",
+      "SendGrid accounts with cracked passwords sold to spammers (KrebsOnSecurity)",
+      "Self-replicating phishing: stolen SendGrid creds used to send more phishing (Barracuda Sept 2025)"
+    ],
     "notes": "100 emails/day free forever. API-driven phishing at scale. Trusted Twilio sender reputation. Domain verification needed for production",
     "customDomain": true,
     "customDomainNotes": "Custom sending domains (DNS verification required)",
@@ -7505,7 +7933,21 @@
         "url": "https://aws.amazon.com/ses/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "email-smtp.*.amazonaws.com",
+      "ses.*.amazonaws.com",
+      "*.amazonses.com",
+      "bounce.*.amazonses.com",
+      "feedback-*.*.amazonses.com",
+      "X-SES-* headers in email (SES origin indicator)",
+      "CloudTrail: ses:SendEmail, ses:SendRawEmail API calls",
+      "CloudTrail: ses:PutAccountDetails (sandbox escape attempt)",
+      "CloudTrail: ses:VerifyEmailIdentity / ses:VerifyDomainIdentity (new sender setup)",
+      "CloudTrail: ses:CreateCase (support ticket to raise SES quota)",
+      "Wiz: 50k+ phishing emails/day via stolen AWS keys + SES sandbox escape (May 2025)",
+      "Multi-region PutAccountDetails calls = SES abuse indicator",
+      "Tax-themed phishing lures via compromised SES: 'Your 2024 Tax Form(s) Are Now Ready'"
+    ],
     "notes": "Cheap bulk email from trusted Amazon infrastructure. Sandbox mode initially (verified recipients only). Production requires AWS approval. 62k emails/mo free from EC2",
     "customDomain": true,
     "customDomainNotes": "Custom sending domains (DNS/DKIM required)",
@@ -7624,7 +8066,15 @@
         "url": "https://lolexfil.github.io"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.backblazeb2.com",
+      "f*.backblazeb2.com",
+      "s3.*.backblazeb2.com",
+      "api.backblazeb2.com",
+      "*.bz2.io",
+      "Backblaze B2 + Cloudflare bandwidth alliance (free egress via CF)",
+      "S3-compatible API: payload/exfil hosting on B2 buckets"
+    ],
     "notes": "10GB free S3-compatible storage. Cheaper and far less monitored than AWS S3. rclone exfil target. Direct download links",
     "customDomain": true,
     "customDomainNotes": "Custom domains via Cloudflare partnership (free bandwidth)",
@@ -7708,7 +8158,15 @@
         "url": "https://lolexfil.github.io"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.pcloud.com",
+      "api.pcloud.com",
+      "eapi.pcloud.com",
+      "my.pcloud.com",
+      "filelink.pcloud.com",
+      "pCloud public file links for payload delivery",
+      "pCloud Crypto folder: E2E encrypted - platform cannot inspect content"
+    ],
     "notes": "10GB free. Direct download links. Less commonly blocked than major cloud storage. Optional E2E encryption (Crypto). rclone exfil target",
     "customDomain": false,
     "customDomainNotes": "N/A - file storage",
@@ -7850,7 +8308,18 @@
         "url": "https://archive.org/about/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "archive.org",
+      "*.archive.org",
+      "web.archive.org",
+      "ia600*.us.archive.org",
+      "ia800*.us.archive.org",
+      "archive.org/download/*",
+      "archive.org/details/*",
+      "Permanent public hosting: all uploads persist forever",
+      "Payload staging on archive.org/download/* (no expiry, no auth)",
+      "Wayback Machine (web.archive.org) for cached phishing page analysis"
+    ],
     "notes": "Universally trusted domain. Files persist indefinitely. Wayback Machine URLs for cached versions of legitimate sites as phishing pretexts",
     "customDomain": false,
     "customDomainNotes": "N/A - digital archive",
@@ -7920,7 +8389,14 @@
         "url": "https://rentry.co/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "rentry.co",
+      "rentry.co/*",
+      "rentry.org",
+      "rentry.co/api/raw/*",
+      "C2 dead drop: paste content retrieved via /api/raw/ endpoint",
+      "Malware config hosting on rentry.co (Lumma Stealer C2 resolution via paste content)"
+    ],
     "notes": "Pastebin alternative with far less SOC coverage. Editable pastes with edit codes for persistent C2 dead drops. No signup needed",
     "customDomain": false,
     "customDomainNotes": "N/A - paste service",
@@ -7992,7 +8468,15 @@
         "url": "https://paste.ee/wiki/API"
       }
     ],
-    "detection": [],
+    "detection": [
+      "paste.ee",
+      "paste.ee/p/*",
+      "paste.ee/r/*",
+      "api.paste.ee",
+      "api.paste.ee/v1/pastes",
+      "C2 dead drop: paste content as encoded commands or config",
+      "Payload staging via paste.ee raw endpoint"
+    ],
     "notes": "API-friendly paste service. Less monitored than Pastebin. Configurable paste expiration",
     "customDomain": false,
     "customDomainNotes": "N/A - paste service",
@@ -8062,7 +8546,13 @@
         "url": "https://termbin.com/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "termbin.com",
+      "termbin.com/*",
+      "TCP connections to termbin.com:9999 (netcat-based paste)",
+      "cmd: echo DATA | nc termbin.com 9999 (data exfil via terminal)",
+      "Termbin URLs in malware droppers as dead drop for C2 config"
+    ],
     "notes": "Netcat-based paste. echo data | nc termbin.com 9999. Minimal network fingerprint - no HTTP headers, no browser needed",
     "customDomain": false,
     "customDomainNotes": "N/A - paste service",
@@ -8128,7 +8618,16 @@
         "url": "https://bitly.com/pages/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "bit.ly",
+      "bit.ly/*",
+      "bitly.com",
+      "api-ssl.bitly.com",
+      "j.mp",
+      "Short link redirects masking malicious destinations",
+      "Bitly click analytics for phishing campaign tracking",
+      "Multiple redirects via bit.ly in email phishing chains"
+    ],
     "notes": "URL shortener with click analytics. Increasingly flagged by email filters - consider lnkd.in or t.co as alternatives",
     "customDomain": true,
     "customDomainNotes": "Custom domains on paid plans ($35/mo)",
@@ -8192,7 +8691,14 @@
         "url": "https://tinyurl.com/app"
       }
     ],
-    "detection": [],
+    "detection": [
+      "tinyurl.com",
+      "tinyurl.com/*",
+      "api.tinyurl.com",
+      "preview.tinyurl.com",
+      "Short link redirects in phishing and smishing (SMS phishing)",
+      "TinyURL preview feature bypass by appending /1 to URL"
+    ],
     "notes": "No account needed. Custom aliases available. Less flagged than Bitly but still a known shortener",
     "customDomain": false,
     "customDomainNotes": "N/A - URL shortener",
@@ -8256,7 +8762,15 @@
         "url": "https://codepen.io/features/pro"
       }
     ],
-    "detection": [],
+    "detection": [
+      "codepen.io",
+      "*.codepen.io",
+      "cdpn.io",
+      "codepen.io/*/pen/*",
+      "codepen.io/*/full/*",
+      "Phishing page hosting on codepen.io/*/full/* (fullscreen view)",
+      "JavaScript payload testing/staging on public pens"
+    ],
     "notes": "JavaScript execution environment. Pens run arbitrary client-side code. Use for credential phishing pages or payload delivery",
     "customDomain": false,
     "customDomainNotes": "N/A - code playground",
@@ -8329,7 +8843,18 @@
         "url": "https://developers.hubspot.com/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.hubspot.com",
+      "*.hs-sites.com",
+      "*.hubspotpagebuilder.com",
+      "api.hubapi.com",
+      "app.hubspot.com",
+      "forms.hubspot.com",
+      "*.hubspot.net",
+      "HubSpot landing pages (*.hs-sites.com) for phishing",
+      "HubSpot forms (forms.hubspot.com) for credential harvesting",
+      "HubSpot tracking links in phishing email chains"
+    ],
     "notes": "Free CRM with built-in email sending (2000/mo), landing page builder, and form builder. All-in-one phishing infrastructure on a trusted enterprise domain. Landing pages on *.hs-sites.com",
     "customDomain": true,
     "customDomainNotes": "Custom domains on Marketing Hub (landing pages)",
@@ -8396,7 +8921,17 @@
         "url": "https://www.postman.com/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.postman.co",
+      "*.postman.com",
+      "api.getpostman.com",
+      "*.postman-echo.com",
+      "go.postman.co",
+      "web.postman.co",
+      "documenter.getpostman.com",
+      "Public Postman workspaces leaking API keys/tokens/secrets",
+      "CMD365 backdoor masqueraded as Postman application (Graph API C2)"
+    ],
     "notes": "Public workspaces for C2 dead drops via collection variables. Mock servers as disposable C2 HTTP endpoints. Environment variables for exfil data. Developer trusted platform - zero SOC coverage",
     "customDomain": false,
     "customDomainNotes": "N/A - API testing",
@@ -8605,7 +9140,15 @@
         "url": "https://medium.com/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "medium.com",
+      "*.medium.com",
+      "cdn-images-1.medium.com",
+      "medium.com/@*",
+      "*.medium.com/feed",
+      "Phishing pretexts: Medium article links in spearphishing emails",
+      "Malware writeups/tutorials hosted on Medium used for technique sharing"
+    ],
     "notes": "Trusted domain for social engineering links. Articles as C2 dead drops via content updates. Embed redirect links. Custom publication domains available",
     "customDomain": true,
     "customDomainNotes": "Custom domains on publications",
@@ -8674,7 +9217,17 @@
         "url": "https://supabase.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.supabase.co",
+      "*.supabase.com",
+      "api.supabase.com",
+      "*.supabase.in",
+      "*.functions.supabase.co",
+      "*.storage.supabase.co",
+      "Supabase Edge Functions as C2/redirector endpoints",
+      "Supabase Storage for payload hosting on *.storage.supabase.co",
+      "Supabase Realtime (WebSocket) for C2 communication channel"
+    ],
     "notes": "Firebase alternative with full Postgres database as C2 backend. Row-level security for access control. Storage for payload hosting. Edge Functions for serverless C2 logic. REST API auto-generated from schema",
     "customDomain": true,
     "customDomainNotes": "Custom domains on Pro plan",
@@ -8936,7 +9489,16 @@
         "url": "https://clickup.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.clickup.com",
+      "app.clickup.com",
+      "api.clickup.com",
+      "doc.clickup.com",
+      "sharing.clickup.com",
+      "ClickUp public docs as phishing redirect pages",
+      "ANY.RUN Oct 2025: ClickUp abused to host redirect pages hiding phishing flows",
+      "ClickUp + Azure Blob Storage chain for credential harvesting"
+    ],
     "notes": "doc.clickup.com for phishing pages on trusted enterprise domain. Task/doc sharing notifications as pretexts. API for automation. Free forever with unlimited members",
     "customDomain": false,
     "customDomainNotes": "N/A - project management",
@@ -9152,7 +9714,16 @@
         "url": "https://support.apple.com/en-us/108047"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.icloud.com",
+      "*.icloud-content.com",
+      "*.apple-cloudkit.com",
+      "p*-caldav.icloud.com",
+      "p*-contacts.icloud.com",
+      "www.icloud.com/iclouddrive/*",
+      "iCloud Drive shared links for payload delivery",
+      "iCloud Mail (*.mail.me.com) for phishing email origin"
+    ],
     "notes": "Apple trusted domain. iCloud Drive sharing links for phishing pretexts. 5GB free. Less commonly associated with attacks than Google/Microsoft - lower SOC awareness",
     "customDomain": false,
     "customDomainNotes": "N/A - cloud storage",
@@ -9732,7 +10303,14 @@
         "url": "https://www.adobe.com/express/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "*.express.adobe.com",
+      "new.express.adobe.com",
+      "express.adobe.com/page/*",
+      "express.adobe.com/post/*",
+      "Adobe Express pages impersonating documents for phishing",
+      "Cofense: Adobe 17%+ of all online document hosting abused in 2024 credential phishing"
+    ],
     "notes": "Shareable web pages on trusted express.adobe.com domain. Create professional phishing materials. Adobe-owned = universally trusted by email filters and proxies",
     "customDomain": false,
     "customDomainNotes": "N/A - design platform",
@@ -9867,7 +10445,14 @@
         "url": "https://www.rebrandly.com/pricing"
       }
     ],
-    "detection": [],
+    "detection": [
+      "rebrand.ly",
+      "rebrand.ly/*",
+      "api.rebrandly.com",
+      "*.rebrandly.com",
+      "Branded short links masking phishing/malware destinations",
+      "Custom branded domains on Rebrandly for high-trust phishing redirects"
+    ],
     "notes": "Custom branded short links. Less flagged than Bitly/TinyURL. Multiple domains (rebrand.ly, rb.gy). Custom domain support hides the shortener entirely. API for automated link creation",
     "customDomain": true,
     "customDomainNotes": "Custom branded domains ($13/mo+)",
@@ -9999,7 +10584,15 @@
         "url": "https://www.docsend.com/pricing/"
       }
     ],
-    "detection": [],
+    "detection": [
+      "docsend.com",
+      "*.docsend.com",
+      "docsend.com/view/*",
+      "api.docsend.com",
+      "DocSend viewer analytics: tracks who viewed, when, how long per page",
+      "DocSend links as phishing pretexts ('view this proposal/contract')",
+      "Cofense: DocuSign-like platforms with link expiration hinder post-attack forensics"
+    ],
     "notes": "Document sharing with built-in email capture and view tracking. Require email to view = credential harvesting. Analytics show who opened when. Dropbox-owned trusted domain. Excellent for BEC pretexts",
     "customDomain": false,
     "customDomainNotes": "N/A - document sharing",
@@ -10376,5 +10969,247 @@
     "rateLimits": "No explicit rate limit",
     "maxFileSize": "N/A",
     "logging": "No audit logs"
+  },
+  {
+    "name": "Zendesk",
+    "url": "https://www.zendesk.com",
+    "category": "Business App",
+    "provider": "Zendesk (acquired by private equity 2022)",
+    "signup": "email",
+    "signupTime": "~3min",
+    "domains": [
+      "zendesk.com",
+      "*.zendesk.com",
+      "zdassets.com",
+      "zopim.com",
+      "zendesk.co.jp"
+    ],
+    "trustedDomain": true,
+    "domainFronting": false,
+    "domainFrontingNotes": "",
+    "abuse": {
+      "phishing": 1,
+      "c2": 0,
+      "exfil": 1,
+      "payload": 1,
+      "creds": 1
+    },
+    "apiEndpoints": [
+      "*.zendesk.com/api/v2/tickets",
+      "*.zendesk.com/api/v2/users",
+      "*.zendesk.com/api/v2/attachments",
+      "*.zendesk.com/api/v2/requests",
+      "*.zendesk.com/hc/*"
+    ],
+    "opsec": "low",
+    "opsecNotes": "*.zendesk.com subdomains ubiquitous in enterprise environments. Support ticket emails come FROM the customer's own domain, not Zendesk, complicating filtering. Anonymous ticket submission enabled by default on most instances. Help center pages (*.zendesk.com/hc/*) indexable and can host arbitrary content. Trial accounts get full Professional features for 14 days - no CC required",
+    "socDetection": "unlikely",
+    "banRisk": "low",
+    "banNotes": "Zendesk allows unverified users to submit tickets by default. Mass email bombing via ticket creation hit Discord, Tinder, Dropbox, NordVPN, Riot Games and others (BleepingComputer Jan 2026). Platform response to abuse has been slow",
+    "verification": "Email verification for trial account",
+    "trust": "high",
+    "lastVerified": "2025-03",
+    "customDomain": true,
+    "customDomainNotes": "Custom subdomains on all plans (yourcompany.zendesk.com). Custom host mapping to your own domain on paid plans",
+    "dataRetention": "Permanent (trial data persists after expiry). Tickets, attachments, help center articles persist indefinitely on paid plans",
+    "rateLimits": "Support/HC API: 200 req/min (Team), 400 req/min (Growth/Professional), 700 req/min (Enterprise), 2500 req/min (Enterprise Plus). Chat API: 200 req/min all plans. Per-account enforcement. Retry-After header on 429",
+    "maxFileSize": "50MB per attachment on tickets. 20MB on help center articles",
+    "logging": "Audit log on Enterprise plan. Admin activity log. API usage tracking via response headers (X-RateLimit-*). Access logs on Enterprise with Advanced Data Privacy add-on. FedRAMP SCG available",
+    "freeTier": {
+      "type": "trial",
+      "devAccount": true,
+      "trialDays": 14,
+      "limits": "14-day trial with Suite Professional features. No CC required. Up to 5 agents. Startup program: 6 months free (<50 employees, up to Series B). Developer partner: sponsored account available"
+    },
+    "sso": {
+      "saml": true,
+      "oidc": true,
+      "scim": true,
+      "oauth": true,
+      "mfa": true,
+      "notes": "SAML, OIDC, JWT SSO supported. Multiple SSO configs for different user groups. Social SSO (Google, Microsoft, Facebook, Twitter). SCIM provisioning on Enterprise. MFA enforced on all plans. FedRAMP authorized"
+    },
+    "knownC2": [],
+    "exfilTools": [],
+    "mitre": [
+      "T1566.002",
+      "T1585.002",
+      "T1498",
+      "T1078.004",
+      "T1199"
+    ],
+    "refs": [
+      {
+        "title": "Zendesk Pricing",
+        "url": "https://www.zendesk.com/pricing/"
+      },
+      {
+        "title": "Zendesk Developer: Trial and Sponsored Accounts",
+        "url": "https://developer.zendesk.com/documentation/api-basics/getting-started/getting-a-trial-or-sponsored-account-for-development/"
+      },
+      {
+        "title": "Zendesk: SSO Options (SAML, OIDC, JWT)",
+        "url": "https://support.zendesk.com/hc/en-us/articles/4408883587226-Single-sign-on-SSO-options-in-Zendesk"
+      },
+      {
+        "title": "Zendesk Developer: API Rate Limits",
+        "url": "https://developer.zendesk.com/api-reference/introduction/rate-limits/"
+      },
+      {
+        "title": "ReliaQuest: Scattered Lapsus$ Hunters Target Zendesk (40+ Typosquatted Domains, Fake SSO Portals)",
+        "url": "https://reliaquest.com/blog/zendesk-scattered-lapsus-hunters-latest-target/"
+      },
+      {
+        "title": "Infosecurity Magazine: Scattered Lapsus$ Hunters Take Aim at Zendesk Users",
+        "url": "https://www.infosecurity-magazine.com/news/scattered-lapsus-hunters-zendesk/"
+      },
+      {
+        "title": "Cybersecurity Dive: Hackers Ready Threat Campaign Aimed at Zendesk Environments",
+        "url": "https://www.cybersecuritydive.com/news/hackers-threat-campaign-zendesk-environments/806666/"
+      },
+      {
+        "title": "BleepingComputer: Zendesk Ticket Systems Hijacked in Massive Global Spam Wave",
+        "url": "https://www.bleepingcomputer.com/news/security/zendesk-ticket-systems-hijacked-in-massive-global-spam-wave/"
+      },
+      {
+        "title": "Rescana: Zendesk Email Bomb Attacks - Exploiting Lax Authentication and Anonymous Ticket Creation",
+        "url": "https://www.rescana.com/post/zendesk-email-bomb-attacks-exploiting-lax-authentication-and-anonymous-ticket-creation"
+      },
+      {
+        "title": "WithSecure: Attackers Exploit Zendesk Trusted Infrastructure to Distribute Signed RMM Tools",
+        "url": "https://acumencyber.com/cyber-threat-intelligence-digest-august-2025-week-31"
+      },
+      {
+        "title": "CSO Online: Scattered Lapsus$ Hunters Target Zendesk Users with Fake Domains",
+        "url": "https://www.csoonline.com/article/4097846/scattered-lapsus-hunters-target-zendesk-users-with-fake-domains.html"
+      },
+      {
+        "title": "Zendesk FedRAMP Secure Configuration Guide",
+        "url": "https://support.zendesk.com/hc/en-us/articles/5004813573658-FedRAMP-Secure-Configuration-Guide-SCG"
+      },
+      {
+        "title": "BleepingComputer: Discord Breach Exposed Data of 5.5M Users (Zendesk Instance via Compromised BPO Agent)",
+        "url": "https://www.bleepingcomputer.com/news/security/hackers-claim-discord-breach-exposed-data-of-55-million-users/"
+      },
+      {
+        "title": "Malwarebytes: Discord Warns Users After Third-Party Zendesk Breach",
+        "url": "https://www.malwarebytes.com/blog/news/2025/10/discord-warns-users-after-data-stolen-in-third-party-breach"
+      }
+    ],
+    "detection": [
+      "*.zendesk.com/api/v2/*",
+      "*.zendesk.com/hc/*",
+      "*.zendesk.com/requests/new",
+      "zdassets.com",
+      "zopim.com"
+    ],
+    "notes": "Customer service platform serving 100k+ companies. Scattered Lapsus$ Hunters (Scattered Spider + ShinyHunters + Lapsus$ coalition) registered 40+ typosquatted Zendesk domains with fake SSO portals for credential harvesting, using NiceNic registrar + Cloudflare-masked nameservers (ReliaQuest Nov 2025). Fraudulent tickets submitted to legitimate Zendesk portals to infect help-desk staff with RATs via pretexts like urgent password resets (ReliaQuest). Discord breach (Sept 2025): attackers compromised a BPO support agent account with access to Discord's Zendesk instance, stealing 1.6TB of data including usernames, emails, billing info, IPs, and ~70k government IDs. Zendesk clarified its own platform was not compromised - the attack exploited a compromised agent credential (BleepingComputer Oct 2025). WithSecure (July 2025): attackers exploit Zendesk trusted ticket infrastructure to distribute signed RMM tools (FleetDeck, Atera, ScreenConnect), bypassing security controls in European phishing campaigns. Email bomb attack (Jan 2026): anonymous ticket creation abused for mass spam via legitimate Zendesk instances of Discord, Tinder, Dropbox, NordVPN, Riot Games, Kahoot, Headspace. Brian Krebs targeted. Emails bypass spam filters because they originate from legitimate company infrastructure"
+  },
+  {
+    "name": "Milanote",
+    "url": "https://milanote.com",
+    "category": "Phishing",
+    "provider": "Milanote Pty Ltd",
+    "signup": "email",
+    "signupTime": "~2min",
+    "domains": [
+      "milanote.com",
+      "*.milanote.com",
+      "app.milanote.com"
+    ],
+    "trustedDomain": true,
+    "domainFronting": false,
+    "domainFrontingNotes": "",
+    "abuse": {
+      "phishing": 1,
+      "c2": 0,
+      "exfil": 0,
+      "payload": 1,
+      "creds": 1
+    },
+    "apiEndpoints": [],
+    "opsec": "low",
+    "opsecNotes": "Phishing emails sent from legitimate support@milanote.com - passes SPF, DKIM, DMARC. Boards shared publicly with no auth. Used as stepping stone in AitM phishing chains. Attackers create inbox rules named 'GTH' to delete emails containing 'milanote' to hide evidence from victims. No API available - all abuse is via web interface",
+    "socDetection": "unlikely",
+    "banRisk": "low",
+    "banNotes": "Milanote is a niche creative collaboration tool - most SOC teams don't monitor or block it. Low enforcement visibility",
+    "verification": "Email verification",
+    "trust": "medium",
+    "lastVerified": "2025-03",
+    "customDomain": false,
+    "customDomainNotes": "N/A",
+    "dataRetention": "Permanent (free: 100 notes/images/links, 10 file uploads). Unlimited shared boards",
+    "rateLimits": "No API. No explicit rate limits on web interface",
+    "maxFileSize": "10 file uploads on free plan. Size limits not publicly documented",
+    "logging": "No audit logs. No admin dashboard on free tier",
+    "freeTier": {
+      "type": "free",
+      "devAccount": false,
+      "trialDays": null,
+      "limits": "Free forever: 100 notes/images/links, 10 file uploads, unlimited shared boards. Pro: $9.99/mo (annual) for unlimited everything"
+    },
+    "sso": {
+      "saml": false,
+      "oidc": false,
+      "scim": false,
+      "oauth": true,
+      "mfa": false,
+      "notes": "Google/Apple sign-in via OAuth. No enterprise SSO. No MFA"
+    },
+    "knownC2": [],
+    "exfilTools": [],
+    "mitre": [
+      "T1566.002",
+      "T1550.004",
+      "T1114.003",
+      "T1564.008"
+    ],
+    "refs": [
+      {
+        "title": "Milanote Plans",
+        "url": "https://milanote.com/plans"
+      },
+      {
+        "title": "Darktrace: MFA Under Attack - AiTM Phishing Kits Abusing Milanote and Tycoon 2FA",
+        "url": "https://www.darktrace.com/blog/mfa-under-attack-aitm-phishing-kits-abusing-legitimate-services"
+      },
+      {
+        "title": "CyberSecurityNews: AiTM Phishing Kits Bypassing MFA via Milanote + Tycoon 2FA",
+        "url": "https://cybersecuritynews.com/aitm-phishing-kits-bypassing-mfa/"
+      },
+      {
+        "title": "CyberPress: AiTM Phishing Kits Defeat MFA by Stealing Credentials and Tokens",
+        "url": "https://cyberpress.org/aitm-phishing-kits-defeat-mfa-by-stealing-credentials/"
+      },
+      {
+        "title": "ANY.RUN: Tycoon 2FA Malware Analysis (Milanote as phishing vector)",
+        "url": "https://any.run/malware-trends/tycoon/"
+      },
+      {
+        "title": "CYFIRMA: Tycoon 2FA Technical Analysis of AiTM Phishing Operation",
+        "url": "https://www.cyfirma.com/research/tycoon-2fa-a-technical-analysis-of-its-adversary-in-the-middle-phishing-operation/"
+      },
+      {
+        "title": "Centripetal: Tycoon 2FA vs Sneaky 2FA - Two PhaaS Campaigns Targeting MFA Bypass",
+        "url": "https://www.centripetal.ai/threat-research/typhoon-versus-sneaky"
+      },
+      {
+        "title": "UnderCode News: How Hackers Defeat MFA with AiTM Using Milanote and Tycoon 2FA",
+        "url": "https://undercodenews.com/phishing-20-how-hackers-are-defeating-mfa-with-aitm-attacks-using-milanote-and-tycoon-2fa/"
+      }
+    ],
+    "detection": [
+      "milanote.com",
+      "*.milanote.com",
+      "app.milanote.com",
+      "support@milanote.com (legitimate sender abused in phishing chains)",
+      "Emails from milanote.com referencing 'new agreement' or 'shared board'",
+      "Inbox rules named 'GTH' or 'GFH' deleting emails containing 'milanote'",
+      "Cloudflare Turnstile CAPTCHA after Milanote link click (AitM redirect chain)",
+      "Post-click redirect to fake Microsoft/Google login page",
+      "Tycoon 2FA domains: *.rlcozx.es, *.dreajeacrio.sa.com, *.kooverou.sa.com",
+      "Simultaneous logins from geographically distant locations after Milanote email interaction"
+    ],
+    "notes": "Visual collaboration/note-taking platform. Primary phishing vector for Tycoon 2FA Adversary-in-the-Middle phishing kit (PhaaS, $120/10 days via Telegram). Darktrace SOC investigated multiple compromises in late 2024/early 2025 where Milanote emails were used as initial vector. Attack chain: phishing email from support@milanote.com referencing 'new agreement' -> Milanote board with mix of legitimate and malicious links -> Cloudflare Turnstile CAPTCHA -> fake Microsoft/Google login page -> AitM intercepts credentials + MFA tokens + session cookies in real-time. Post-compromise: attackers create inbox rule 'GTH' to delete emails containing 'milanote', access 140+ emails, modify sent items attachments for BEC invoice fraud. Campaign targeted 19 users in one org - one compromised within minutes despite MFA. Used alongside Mamba 2FA kit. Tycoon 2FA linked to 3000+ phishing pages, 1200+ domains, active since Aug 2023. Campaign variants in multiple languages with anti-analysis features (disabled right-click, blocked content copying)"
   }
 ]
