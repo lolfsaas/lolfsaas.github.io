@@ -11003,8 +11003,8 @@
       "*.zendesk.com/hc/*"
     ],
     "opsec": "low",
-    "opsecNotes": "*.zendesk.com subdomains ubiquitous in enterprise environments. Support ticket emails come FROM the customer's own domain, not Zendesk, complicating filtering. Anonymous ticket submission enabled by default on most instances. Help center pages (*.zendesk.com/hc/*) indexable and can host arbitrary content. Trial accounts get full Professional features for 14 days - no CC required",
-    "socDetection": "unlikely",
+    "opsecNotes": "*.zendesk.com subdomains are ubiquitous in enterprise environments. Support ticket emails come FROM the customer's own domain, not Zendesk, complicating filtering. Anonymous ticket submission enabled by default. Help center pages indexable. However, any mature SOC that maintains a Zendesk tenant allowlist will immediately flag traffic to unknown tenants. Trial accounts get full Professional features for 14 days with no CC",
+    "socDetection": "likely",
     "banRisk": "low",
     "banNotes": "Zendesk allows unverified users to submit tickets by default. Mass email bombing via ticket creation hit Discord, Tinder, Dropbox, NordVPN, Riot Games and others (BleepingComputer Jan 2026). Platform response to abuse has been slow",
     "verification": "Email verification for trial account",
@@ -11098,11 +11098,20 @@
       }
     ],
     "detection": [
-      "*.zendesk.com/api/v2/*",
-      "*.zendesk.com/hc/*",
-      "*.zendesk.com/requests/new",
-      "zdassets.com",
-      "zopim.com"
+      "DOMAIN: *.zendesk.com/api/v2/* (API traffic to non-company Zendesk tenants)",
+      "DOMAIN: *.zendesk.com/hc/* (help center pages - can host arbitrary content)",
+      "DOMAIN: *.zendesk.com/requests/new (anonymous ticket submission endpoint)",
+      "DOMAIN: zdassets.com, zopim.com (Zendesk CDN and chat widget domains)",
+      "ALLOWLIST LOGIC: maintain a list of known/approved Zendesk tenant subdomains for your org - alert on connections to ANY other *.zendesk.com tenant",
+      "EMAIL: ticket confirmation emails from Zendesk instances your org does not use - these originate from the customer's domain, not zendesk.com",
+      "EMAIL: high volume of ticket creation notifications from multiple brands' Zendesk instances targeting same recipient (email bomb indicator)",
+      "DNS: typosquatted Zendesk domains (e.g. znedesk.com, vpn-zendesk.com) - 40+ registered by Scattered Lapsus$ Hunters via NiceNic/Cloudflare",
+      "SSO: fake Zendesk SSO portal on non-zendesk.com domain requesting credentials",
+      "TICKET CONTENT: attachments containing .exe, .hta, .lnk, .ps1 or RMM installers (FleetDeck, Atera, ScreenConnect) submitted via Zendesk tickets",
+      "TICKET CONTENT: urgent password reset or IT support pretexts targeting help desk staff - common Scattered Spider/Lapsus$ social engineering",
+      "BEHAVIORAL: support agent account accessing tickets from unusual IP/geo (compromised agent credential indicator)",
+      "BEHAVIORAL: bulk API queries via compromised agent tokens (data exfiltration pattern, as seen in Discord Zendesk breach)",
+      "SIEM RULE: alert on Zendesk API traffic to tenants NOT in your approved tenant allowlist - high confidence indicator of phishing or data exfil"
     ],
     "notes": "Customer service platform serving 100k+ companies. Scattered Lapsus$ Hunters (Scattered Spider + ShinyHunters + Lapsus$ coalition) registered 40+ typosquatted Zendesk domains with fake SSO portals for credential harvesting, using NiceNic registrar + Cloudflare-masked nameservers (ReliaQuest Nov 2025). Fraudulent tickets submitted to legitimate Zendesk portals to infect help-desk staff with RATs via pretexts like urgent password resets (ReliaQuest). Discord breach (Sept 2025): attackers compromised a BPO support agent account with access to Discord's Zendesk instance, stealing 1.6TB of data including usernames, emails, billing info, IPs, and ~70k government IDs. Zendesk clarified its own platform was not compromised - the attack exploited a compromised agent credential (BleepingComputer Oct 2025). WithSecure (July 2025): attackers exploit Zendesk trusted ticket infrastructure to distribute signed RMM tools (FleetDeck, Atera, ScreenConnect), bypassing security controls in European phishing campaigns. Email bomb attack (Jan 2026): anonymous ticket creation abused for mass spam via legitimate Zendesk instances of Discord, Tinder, Dropbox, NordVPN, Riot Games, Kahoot, Headspace. Brian Krebs targeted. Emails bypass spam filters because they originate from legitimate company infrastructure"
   },
@@ -11130,8 +11139,8 @@
     },
     "apiEndpoints": [],
     "opsec": "low",
-    "opsecNotes": "Phishing emails sent from legitimate support@milanote.com - passes SPF, DKIM, DMARC. Boards shared publicly with no auth. Used as stepping stone in AitM phishing chains. Attackers create inbox rules named 'GTH' to delete emails containing 'milanote' to hide evidence from victims. No API available - all abuse is via web interface",
-    "socDetection": "unlikely",
+    "opsecNotes": "Emails sent from legitimate support@milanote.com pass SPF, DKIM, DMARC. Niche creative tool - most orgs don't use it, making allowlist-based detection highly effective. Any Milanote traffic in a non-Milanote org is a strong anomaly signal. Post-compromise: attackers create inbox rules to hide evidence. Free tier with no time limit",
+    "socDetection": "likely",
     "banRisk": "low",
     "banNotes": "Milanote is a niche creative collaboration tool - most SOC teams don't monitor or block it. Low enforcement visibility",
     "verification": "Email verification",
@@ -11200,16 +11209,18 @@
       }
     ],
     "detection": [
-      "milanote.com",
-      "*.milanote.com",
-      "app.milanote.com",
-      "support@milanote.com (legitimate sender abused in phishing chains)",
-      "Emails from milanote.com referencing 'new agreement' or 'shared board'",
-      "Inbox rules named 'GTH' or 'GFH' deleting emails containing 'milanote'",
-      "Cloudflare Turnstile CAPTCHA after Milanote link click (AitM redirect chain)",
-      "Post-click redirect to fake Microsoft/Google login page",
-      "Tycoon 2FA domains: *.rlcozx.es, *.dreajeacrio.sa.com, *.kooverou.sa.com",
-      "Simultaneous logins from geographically distant locations after Milanote email interaction"
+      "DOMAIN: milanote.com, *.milanote.com, app.milanote.com",
+      "EMAIL: messages from support@milanote.com referencing 'new agreement', 'shared board', or 'invitation' - legitimate Milanote sender abused as phishing vector",
+      "ALLOWLIST LOGIC: if your org does not use Milanote, block or alert on ALL traffic to milanote.com - this is a niche creative tool, most enterprises don't use it",
+      "ALLOWLIST LOGIC: if your org uses Milanote, alert on board share notifications sent to users who are not in the Milanote-authorized group",
+      "INBOX RULE: Exchange/M365 inbox rules named 'GTH' or 'GFH' that delete emails containing 'milanote' in subject or body - post-compromise persistence by Tycoon 2FA",
+      "REDIRECT CHAIN: Milanote link -> Cloudflare Turnstile CAPTCHA -> fake Microsoft/Google login page (AitM credential + MFA token harvesting)",
+      "BEHAVIORAL: user clicks Milanote link then immediately authenticates from a new/unusual IP or geolocation - session hijack indicator via stolen session cookie",
+      "BEHAVIORAL: simultaneous active sessions from two geographically distant locations after Milanote email interaction (impossible travel)",
+      "TYCOON 2FA IOCs: DNS queries to lrn.ialeahed.com and similar Tycoon infrastructure domains",
+      "TYCOON 2FA IOCs: phishing pages with disabled right-click, blocked copy/paste, and anti-debugging scripts",
+      "M365 CONDITIONAL ACCESS: MFA-validated logins from IP ranges associated with known AitM proxy infrastructure (e.g. 89.185.80.0/24, 5.181.3.0/24, 38.242.7.0/24)",
+      "SIEM RULE: any email from milanote.com domains in environments that don't use Milanote should be treated as suspicious - high confidence phishing indicator"
     ],
     "notes": "Visual collaboration/note-taking platform. Primary phishing vector for Tycoon 2FA Adversary-in-the-Middle phishing kit (PhaaS, $120/10 days via Telegram). Darktrace SOC investigated multiple compromises in late 2024/early 2025 where Milanote emails were used as initial vector. Attack chain: phishing email from support@milanote.com referencing 'new agreement' -> Milanote board with mix of legitimate and malicious links -> Cloudflare Turnstile CAPTCHA -> fake Microsoft/Google login page -> AitM intercepts credentials + MFA tokens + session cookies in real-time. Post-compromise: attackers create inbox rule 'GTH' to delete emails containing 'milanote', access 140+ emails, modify sent items attachments for BEC invoice fraud. Campaign targeted 19 users in one org - one compromised within minutes despite MFA. Used alongside Mamba 2FA kit. Tycoon 2FA linked to 3000+ phishing pages, 1200+ domains, active since Aug 2023. Campaign variants in multiple languages with anti-analysis features (disabled right-click, blocked content copying)"
   }
