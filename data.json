@@ -11095,6 +11095,10 @@
       {
         "title": "Malwarebytes: Discord Warns Users After Third-Party Zendesk Breach",
         "url": "https://www.malwarebytes.com/blog/news/2025/10/discord-warns-users-after-data-stolen-in-third-party-breach"
+      },
+      {
+        "title": "ReliaQuest: ShinyHunters Fires Up Another Zendesk Campaign - 60+ Impersonation Domains (March 2026)",
+        "url": "https://reliaquest.com/blog/zendesk-scattered-lapsus-hunters-latest-target/"
       }
     ],
     "detection": [
@@ -11103,17 +11107,20 @@
       "DOMAIN: *.zendesk.com/requests/new (anonymous ticket submission endpoint)",
       "DOMAIN: zdassets.com, zopim.com (Zendesk CDN and chat widget domains)",
       "ALLOWLIST LOGIC: maintain a list of known/approved Zendesk tenant subdomains for your org - alert on connections to ANY other *.zendesk.com tenant",
+      "HIGH PRIORITY: alert on authentication attempts from domains matching [anything]zendesk[.]com - ShinyHunters March 2026 campaign uses [brandname]zendesk[.]com pattern with valid TLS certs (60+ domains identified by ReliaQuest)",
+      "DNS: monitor for newly registered domains containing 'zendesk' that are NOT *.zendesk.com subdomains - these are impersonation domains targeting credential harvesting",
+      "DNS: typosquatted Zendesk domains (e.g. znedesk.com, vpn-zendesk.com) - 40+ registered Nov 2025 + 60+ registered Jan-March 2026 via NiceNic/Cloudflare by ShinyHunters",
       "EMAIL: ticket confirmation emails from Zendesk instances your org does not use - these originate from the customer's domain, not zendesk.com",
       "EMAIL: high volume of ticket creation notifications from multiple brands' Zendesk instances targeting same recipient (email bomb indicator)",
-      "DNS: typosquatted Zendesk domains (e.g. znedesk.com, vpn-zendesk.com) - 40+ registered by Scattered Lapsus$ Hunters via NiceNic/Cloudflare",
-      "SSO: fake Zendesk SSO portal on non-zendesk.com domain requesting credentials",
+      "SSO: fake Zendesk SSO portal on non-zendesk.com domain requesting credentials - ShinyHunters embeds trusted brand names into malicious domains for legitimacy",
       "TICKET CONTENT: attachments containing .exe, .hta, .lnk, .ps1 or RMM installers (FleetDeck, Atera, ScreenConnect) submitted via Zendesk tickets",
-      "TICKET CONTENT: urgent password reset or IT support pretexts targeting help desk staff - common Scattered Spider/Lapsus$ social engineering",
+      "TICKET CONTENT: urgent password reset or IT support pretexts targeting help desk staff - common Scattered Spider/Lapsus$/ShinyHunters social engineering",
       "BEHAVIORAL: support agent account accessing tickets from unusual IP/geo (compromised agent credential indicator)",
       "BEHAVIORAL: bulk API queries via compromised agent tokens (data exfiltration pattern, as seen in Discord Zendesk breach)",
-      "SIEM RULE: alert on Zendesk API traffic to tenants NOT in your approved tenant allowlist - high confidence indicator of phishing or data exfil"
+      "SIEM RULE: alert on Zendesk API traffic to tenants NOT in your approved tenant allowlist - high confidence indicator of phishing or data exfil",
+      "SIEM RULE: regex match on proxy/DNS logs for domains matching .*zendesk\\.(com|net|org|io) that are NOT zendesk.com or *.zendesk.com - impersonation domain indicator"
     ],
-    "notes": "Customer service platform serving 100k+ companies. Scattered Lapsus$ Hunters (Scattered Spider + ShinyHunters + Lapsus$ coalition) registered 40+ typosquatted Zendesk domains with fake SSO portals for credential harvesting, using NiceNic registrar + Cloudflare-masked nameservers (ReliaQuest Nov 2025). Fraudulent tickets submitted to legitimate Zendesk portals to infect help-desk staff with RATs via pretexts like urgent password resets (ReliaQuest). Discord breach (Sept 2025): attackers compromised a BPO support agent account with access to Discord's Zendesk instance, stealing 1.6TB of data including usernames, emails, billing info, IPs, and ~70k government IDs. Zendesk clarified its own platform was not compromised - the attack exploited a compromised agent credential (BleepingComputer Oct 2025). WithSecure (July 2025): attackers exploit Zendesk trusted ticket infrastructure to distribute signed RMM tools (FleetDeck, Atera, ScreenConnect), bypassing security controls in European phishing campaigns. Email bomb attack (Jan 2026): anonymous ticket creation abused for mass spam via legitimate Zendesk instances of Discord, Tinder, Dropbox, NordVPN, Riot Games, Kahoot, Headspace. Brian Krebs targeted. Emails bypass spam filters because they originate from legitimate company infrastructure"
+    "notes": "Customer service platform serving 100k+ companies. Scattered Lapsus$ Hunters (Scattered Spider + ShinyHunters + Lapsus$ coalition) registered 40+ typosquatted Zendesk domains with fake SSO portals for credential harvesting, using NiceNic registrar + Cloudflare-masked nameservers (ReliaQuest Nov 2025). March 2026 update: ShinyHunters firing up another campaign - ReliaQuest identified 60+ newly registered domains following [brandname]zendesk[.]com pattern targeting financial services, SaaS vendors, and high-value sectors. Domains use valid TLS certificates to appear authentic in browsers and email clients. Fraudulent tickets submitted to legitimate Zendesk portals to infect help-desk staff with RATs via pretexts like urgent password resets (ReliaQuest). Discord breach (Sept 2025): attackers compromised a BPO support agent account with access to Discord's Zendesk instance, stealing 1.6TB of data including usernames, emails, billing info, IPs, and ~70k government IDs. Zendesk clarified its own platform was not compromised - the attack exploited a compromised agent credential (BleepingComputer Oct 2025). WithSecure (July 2025): attackers exploit Zendesk trusted ticket infrastructure to distribute signed RMM tools (FleetDeck, Atera, ScreenConnect), bypassing security controls in European phishing campaigns. Email bomb attack (Jan 2026): anonymous ticket creation abused for mass spam via legitimate Zendesk instances of Discord, Tinder, Dropbox, NordVPN, Riot Games, Kahoot, Headspace. Brian Krebs targeted. Emails bypass spam filters because they originate from legitimate company infrastructure"
   },
   {
     "name": "Milanote",
@@ -11140,7 +11147,7 @@
     "apiEndpoints": [],
     "opsec": "low",
     "opsecNotes": "Emails sent from legitimate support@milanote.com pass SPF, DKIM, DMARC. Niche creative tool - most orgs don't use it, making allowlist-based detection highly effective. Any Milanote traffic in a non-Milanote org is a strong anomaly signal. Post-compromise: attackers create inbox rules to hide evidence. Free tier with no time limit",
-    "socDetection": "likely",
+    "socDetection": "moderate",
     "banRisk": "low",
     "banNotes": "Milanote is a niche creative collaboration tool - most SOC teams don't monitor or block it. Low enforcement visibility",
     "verification": "Email verification",
