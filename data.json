@@ -34,7 +34,7 @@
     "banNotes": "C2 hosting requires prior approval form. No auto-ban for normal usage",
     "verification": "CC required. Phone verification for some services. Identity verification for SES production",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -228,7 +228,7 @@
     "banNotes": "Pentest allowed without approval on own resources. Abuse reports forwarded to account owner",
     "verification": "CC required. Identity verification for some services",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -434,7 +434,7 @@
     "banNotes": "Pentest allowed on own projects without notification. Abuse team active but slow",
     "verification": "CC required. Phone verification. Identity for billing",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -539,7 +539,8 @@
     "dataRetention": "Permanent (GCS)",
     "rateLimits": "Cloud Functions: 1000 concurrent. GCS: 5000 read/s per bucket",
     "maxFileSize": "5TB per object (GCS)",
-    "logging": "Cloud Audit Logs, Cloud Logging. All API calls logged"
+    "logging": "Cloud Audit Logs, Cloud Logging. All API calls logged",
+    "lolc2Url": "https://lolc2.github.io/#firebase"
   },
   {
     "name": "Oracle Cloud",
@@ -569,7 +570,7 @@
     "banNotes": "Minimal abuse enforcement. Always Free VMs rarely reviewed",
     "verification": "CC required. Identity verification at signup",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -647,7 +648,7 @@
     "banNotes": "Abuse reports handled manually. Less aggressive than hyperscalers",
     "verification": "CC required. Email verification",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": true,
@@ -737,7 +738,7 @@
     "banNotes": "Workers/Pages rarely flagged. Tunnels are ephemeral. R2 has no content scanning",
     "verification": "Email only. No CC for free tier. No phone verification",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -860,7 +861,7 @@
     "banNotes": "Salesforce abuse team moderately active. Phishing pages get reported",
     "verification": "Email only. CC for paid dynos",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "none",
       "devAccount": false,
@@ -933,7 +934,7 @@
     "banNotes": "Minimal abuse enforcement. Phishing pages may persist for days",
     "verification": "Email or GitHub OAuth. No CC for free tier",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1011,7 +1012,7 @@
     "banNotes": "Minimal abuse enforcement",
     "verification": "Email or Git OAuth. No CC for free tier",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1087,7 +1088,7 @@
     "banNotes": "Ngrok actively monitors for abuse. Free tier has interstitial warning page",
     "verification": "Email required. Phone for paid plans",
     "trust": "none",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1176,7 +1177,7 @@
     "banNotes": "GitHub actively removes malicious repos/pages when reported. DMCA takedowns fast",
     "verification": "Email only. No phone. No CC for free. 2FA encouraged",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1306,7 +1307,7 @@
     "banNotes": "Less aggressive abuse enforcement than GitHub",
     "verification": "Email only. No CC for free tier",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1393,7 +1394,7 @@
     "banNotes": "Atlassian abuse team less active than GitHub",
     "verification": "Email only (Atlassian account)",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1484,7 +1485,7 @@
     "banNotes": "Post-2024 Durov arrest: increased enforcement. Bot tokens can be revoked. IP/phone shared with LE on legal request. Phishing sites dropped sharply after Sept 2024",
     "verification": "Phone number required. No anonymous signup. Burner SIM needed for OPSEC",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1636,7 +1637,7 @@
     "banNotes": "Active abuse detection. Webhooks flagged for malware distribution. CDN now scoped. Accounts banned for TOS violations",
     "verification": "Email required. Phone required for some servers. Captcha on signup",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1795,7 +1796,7 @@
     "banNotes": "Workspace abuse reports handled. Bot tokens revoked on report. Enterprise has audit logs",
     "verification": "Email only. No phone for free workspace. OAuth tokens are revocable",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -1942,7 +1943,7 @@
     "banNotes": "Part of M365 - abuse handled through Microsoft reporting. Less scrutinized than consumer platforms",
     "verification": "Microsoft account required. M365 license for full features",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -2042,7 +2043,7 @@
     "banNotes": "API abuse detection active. Accounts suspended for automation. API now paid",
     "verification": "Email + phone required. API requires developer portal approval",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -2143,7 +2144,7 @@
     "banNotes": "Google abuse team focuses on spam, not API C2. OAuth app review for production",
     "verification": "Google account (email). Phone for recovery. No CC",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -2253,7 +2254,7 @@
     "banNotes": "Part of M365 ecosystem. Less scrutinized for C2 than consumer platforms",
     "verification": "Microsoft account. M365 dev program free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -2358,7 +2359,7 @@
     "banNotes": "API traffic blends with legitimate M365 usage. Minimal C2-specific detection",
     "verification": "Microsoft account with M365 license or dev program",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -2493,7 +2494,7 @@
     "banNotes": "Legitimate automation platform. C2 traffic indistinguishable from normal flows",
     "verification": "M365 account with Power Automate license",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -2577,7 +2578,7 @@
     "banNotes": "Part of M365. File sharing rarely flagged unless mass-reported",
     "verification": "Microsoft account. 5GB free with any account",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -2717,7 +2718,7 @@
     "banNotes": "Comment/description C2 is extremely stealthy. No API abuse detection for read operations",
     "verification": "Google account. Phone for channel creation",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -2805,7 +2806,7 @@
     "banNotes": "Minimal API abuse detection. Subreddits rarely monitored for C2",
     "verification": "Email only. No phone required. Throwaway accounts easy",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -2888,7 +2889,7 @@
     "banNotes": "API requires Facebook developer approval. Less practical for C2",
     "verification": "Email/phone. Facebook developer portal for API access",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -2969,7 +2970,7 @@
     "banNotes": "No known abuse enforcement against API C2. Pages rarely scanned",
     "verification": "Email only. No phone. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3061,7 +3062,7 @@
     "banNotes": "Chat API rarely monitored. Meeting invites trusted by email filters",
     "verification": "Email required. Phone for free account verification in some regions",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3148,7 +3149,7 @@
     "banNotes": "Calendar API traffic perfectly blends with legitimate usage. Zero detection coverage",
     "verification": "Google account only",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3235,7 +3236,7 @@
     "banNotes": "Drive API blends with legitimate usage. Sharing notifications trusted everywhere",
     "verification": "Google account. 15GB free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -3382,7 +3383,7 @@
     "banNotes": "Sheets API traffic indistinguishable from legitimate automation",
     "verification": "Google account only",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3471,7 +3472,7 @@
     "banNotes": "Extremely niche C2 channel. Zero detection coverage",
     "verification": "Google account only",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3550,7 +3551,7 @@
     "banNotes": "No account needed. Proxy requests blend with normal translate usage",
     "verification": "No signup required",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -3632,7 +3633,7 @@
     "banNotes": "Dropbox scans shared links for malware. API tokens revoked on abuse report",
     "verification": "Email only. Phone optional. CC for Business",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3760,7 +3761,7 @@
     "banNotes": "Nobody expects VT traffic to be C2. Comments API rarely monitored",
     "verification": "Email only. API key free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3852,7 +3853,7 @@
     "banNotes": "Obscure platform. Zero abuse enforcement for C2",
     "verification": "Email only",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -3936,7 +3937,7 @@
     "banNotes": "Decentralized - no central authority to ban. Self-hostable",
     "verification": "Email only on matrix.org. Self-hosted = full control",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4025,7 +4026,7 @@
     "banNotes": "OpenAI monitors API usage. Files API may be reviewed. Safety team active",
     "verification": "Email + phone. CC for API usage beyond free credits",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4109,7 +4110,7 @@
     "banNotes": "Anthropic monitors API usage. Safety team active but Files API is new",
     "verification": "Email required. CC for API usage",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4194,7 +4195,7 @@
     "banNotes": "Decentralized - instance admins are the only moderators. Self-hostable",
     "verification": "Email only per instance. Self-hosted = no verification",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4273,7 +4274,7 @@
     "banNotes": "Meta actively bans automation. Yowsup/unofficial clients detected and banned",
     "verification": "Phone number required. No anonymous signup",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -4350,7 +4351,7 @@
     "banNotes": "Zero C2 detection. Fitness platform with no security team monitoring API abuse",
     "verification": "Email only. OAuth for API",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4430,7 +4431,7 @@
     "banNotes": "Open-source chess platform. Bot API is legitimate feature. Zero abuse monitoring",
     "verification": "Email only. No verification",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4511,7 +4512,7 @@
     "banNotes": "API rate limits but no C2 detection. Developer portal is straightforward",
     "verification": "Email only. Developer portal free",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4592,7 +4593,7 @@
     "banNotes": "Minimal API monitoring. Declining platform with less enforcement",
     "verification": "Email only",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4671,7 +4672,7 @@
     "banNotes": "Image proxy is anonymous. No account. No abuse tracking",
     "verification": "No signup required",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -4747,7 +4748,7 @@
     "banNotes": "API abuse rarely monitored. Enterprise project management tool",
     "verification": "Email only. Free for up to 15 users",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4831,7 +4832,7 @@
     "banNotes": "API abuse rarely monitored. Enterprise trusted",
     "verification": "Email (Atlassian account). Free up to 10 users",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4914,7 +4915,7 @@
     "banNotes": "Enterprise trusted. Cisco security team exists but C2 via chat is novel",
     "verification": "Email only. Free tier available",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -4999,7 +5000,7 @@
     "banNotes": "Self-hostable. Open source. No central abuse enforcement",
     "verification": "Email per instance. Self-hosted = full control",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -5080,7 +5081,7 @@
     "banNotes": "Security product ironically used as C2. No abuse detection for deployment server misconfig",
     "verification": "Email for account. Developer license free",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": true,
@@ -5163,7 +5164,7 @@
     "banNotes": "Google removes phishing forms when reported. Automated scanning exists but is inconsistent",
     "verification": "Google account only",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5242,7 +5243,7 @@
     "banNotes": "Less scrutinized than Google Forms for phishing",
     "verification": "Microsoft account",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5314,7 +5315,7 @@
     "banNotes": "Microsoft has started scanning Sway pages for phishing in 2024+. Some automated takedowns",
     "verification": "Microsoft account",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5385,7 +5386,7 @@
     "banNotes": "Google scans Sites for phishing. Automated takedowns possible but inconsistent",
     "verification": "Google account only",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5457,7 +5458,7 @@
     "banNotes": "Signing request emails almost never flagged. Developer account straightforward",
     "verification": "Email. Developer account free. CC for paid plans",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": true,
@@ -5544,7 +5545,7 @@
     "banNotes": "E2E encrypted - Mega cannot inspect content. Minimal enforcement",
     "verification": "Email only. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5641,7 +5642,7 @@
     "banNotes": "No account needed. Files auto-expire. Minimal content scanning",
     "verification": "No signup required",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5715,7 +5716,7 @@
     "banNotes": "Anonymous uploads. Minimal moderation",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5796,7 +5797,7 @@
     "banNotes": "Well-known to threat intel. Pastebin Pro accounts have been banned for C2",
     "verification": "Optional account. Pro requires email",
     "trust": "none",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -5892,7 +5893,7 @@
     "banNotes": "Developer account is legitimate. Testing SSO is normal activity",
     "verification": "Email for developer signup. Free tier available",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -5982,7 +5983,7 @@
     "banNotes": "Dev program is legitimate. Testing your own tenant is allowed",
     "verification": "Email. Dev program free. CC not required",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -6084,7 +6085,7 @@
     "banNotes": "Minimal content moderation on shared videos",
     "verification": "Email only. Google/Slack SSO login. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -6158,7 +6159,7 @@
     "banNotes": "Scheduling links rarely flagged. Custom questions in booking forms",
     "verification": "Email only. Google/Microsoft SSO. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -6232,7 +6233,7 @@
     "banNotes": "API usage blends with legitimate automation. Minimal content moderation",
     "verification": "Email only. Google/SSO login. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -6306,7 +6307,7 @@
     "banNotes": "Pentest on own org allowed. *.visualstudio.com universally trusted",
     "verification": "Microsoft account. Free tier available. No CC required",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -6376,7 +6377,7 @@
     "banNotes": "Twilio actively monitors for fraudulent messaging. Trial accounts limited. Identity verification for production",
     "verification": "Email + phone. CC for upgrade. Identity verification for production messaging. Trial has 'Sent from Twilio' prefix",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": true,
@@ -6453,7 +6454,7 @@
     "banNotes": "Mailgun monitors sending reputation. Phishing detected via feedback loops. Accounts suspended for abuse",
     "verification": "Email + CC required. Domain DNS verification for production. Sandbox mode initially",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": true,
@@ -6526,7 +6527,7 @@
     "banNotes": "Minimal abuse enforcement. Less known than Heroku",
     "verification": "Email or GitHub OAuth. No CC for free tier",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -6600,7 +6601,7 @@
     "banNotes": "No enforcement. Ephemeral URLs. Commonly used in security testing",
     "verification": "No signup required. Instant unique URL generated",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -6693,7 +6694,7 @@
     "banNotes": "Automation platform. Minimal abuse monitoring",
     "verification": "Email only. GitHub/Google OAuth. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -6766,7 +6767,7 @@
     "banNotes": "LinkedIn actively removes fake profiles. Automated connection requests flagged. InMail abuse detected",
     "verification": "Email required. Phone for some features. Real identity expected (but not verified)",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -6841,7 +6842,7 @@
     "banNotes": "Design sharing is normal behavior. Minimal content moderation",
     "verification": "Email only. Google SSO. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -6919,7 +6920,7 @@
     "banNotes": "Google abuse team handles reports but Firebase phishing pages can persist for days",
     "verification": "Google account only. No CC for Spark (free) plan",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7002,7 +7003,7 @@
     "banNotes": "Developer edition is legitimate. API testing expected",
     "verification": "Email for developer signup. No CC. No phone",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7090,7 +7091,7 @@
     "banNotes": "Developer instances are legitimate. Reset every 10 days if inactive",
     "verification": "Email + ServiceNow developer account",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7170,7 +7171,7 @@
     "banNotes": "Board sharing is normal behavior. API rarely monitored",
     "verification": "Email (Atlassian account). No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7251,7 +7252,7 @@
     "banNotes": "Enterprise file sharing. Minimal content moderation on free tier",
     "verification": "Email only. CC for Business plans",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7354,7 +7355,7 @@
     "banNotes": "Design sharing is normal. Minimal content moderation",
     "verification": "Email only. Google SSO. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -7432,7 +7433,7 @@
     "banNotes": "Form submissions not monitored for credential harvesting",
     "verification": "Email only. No CC for free tier",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7504,7 +7505,7 @@
     "banNotes": "Wix moderates content. Phishing sites removed on report",
     "verification": "Email only. No CC for free",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -7579,7 +7580,7 @@
     "banNotes": "Automattic has abuse team. Sites removed on DMCA/phishing reports",
     "verification": "Email only. No CC for free subdomain",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7654,7 +7655,7 @@
     "banNotes": "Minimal abuse enforcement",
     "verification": "Email only. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7726,7 +7727,7 @@
     "banNotes": "Declining platform. Minimal enforcement",
     "verification": "Email only. No CC for free",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -7821,7 +7822,7 @@
     "banNotes": "SendGrid monitors sender reputation via feedback loops. Accounts suspended for phishing",
     "verification": "Email. Domain DNS verification for production sending. CC not required for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7906,7 +7907,7 @@
     "banNotes": "AWS abuse team forwards reports. No auto-ban for normal sending",
     "verification": "AWS account (CC required). Sandbox initially. Production requires AWS approval",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -7984,7 +7985,7 @@
     "banNotes": "Minimal abuse enforcement",
     "verification": "Email only. No CC for free tier",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -8111,7 +8112,7 @@
     "banNotes": "Minimal content moderation",
     "verification": "Email only. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -8203,7 +8204,7 @@
     "banNotes": "Open source. Self-hostable. No content moderation",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -8281,7 +8282,7 @@
     "banNotes": "Non-profit. Minimal content moderation. Files persist",
     "verification": "Email only. No CC. No phone",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -8356,7 +8357,7 @@
     "banNotes": "No enforcement. Anonymous pastes",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -8435,7 +8436,7 @@
     "banNotes": "No enforcement",
     "verification": "No signup required. API key optional",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -8513,7 +8514,7 @@
     "banNotes": "No enforcement",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -8591,7 +8592,7 @@
     "banNotes": "Links disabled on abuse report. Click analytics may be reviewed",
     "verification": "Email only. Free tier available",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -8664,7 +8665,7 @@
     "banNotes": "Minimal enforcement",
     "verification": "No signup required",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -8735,7 +8736,7 @@
     "banNotes": "JavaScript pens are normal behavior",
     "verification": "Email only. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -8811,7 +8812,7 @@
     "banNotes": "HubSpot monitors email reputation. Phishing via forms may trigger review",
     "verification": "Email only. No CC for free CRM. Phone for sales contact",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -8894,7 +8895,7 @@
     "banNotes": "API testing is normal developer behavior. Public workspaces rarely moderated",
     "verification": "Email only. Google SSO. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -8971,7 +8972,7 @@
     "banNotes": "Anonymous uploads. Minimal content moderation for images",
     "verification": "No account needed for anonymous uploads. Email for registered",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -9041,7 +9042,7 @@
     "banNotes": "Google removes phishing blogs when reported. Automated scanning exists",
     "verification": "Google account only",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -9113,7 +9114,7 @@
     "banNotes": "Medium moderates content. Articles removed for TOS violations. Custom domains supported on publications",
     "verification": "Email or Google/Twitter/Facebook. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -9189,7 +9190,7 @@
     "banNotes": "Developer platform. Minimal abuse enforcement",
     "verification": "Email or GitHub OAuth. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -9264,7 +9265,7 @@
     "banNotes": "Minimal abuse enforcement. Enterprise storage provider",
     "verification": "Email + CC required. Free trial available",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": true,
@@ -9392,7 +9393,7 @@
     "banNotes": "000webhost free tier is well-known for abuse. Accounts suspended on report but new ones easy to create",
     "verification": "Email only for 000webhost free tier. CC for Hostinger paid plans",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -9463,7 +9464,7 @@
     "banNotes": "Enterprise PM tool. Doc sharing is normal behavior",
     "verification": "Email only. Google/SSO login. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -9535,7 +9536,7 @@
     "banNotes": "Open source. No content moderation",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -9609,7 +9610,7 @@
     "banNotes": "Tumblr moderates content. Blogs removed on report. Automattic abuse team",
     "verification": "Email only. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -9681,7 +9682,7 @@
     "banNotes": "Apple trusted platform. iCloud sharing links rarely flagged",
     "verification": "Apple ID required. Email + phone. CC optional",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -9762,7 +9763,7 @@
     "banNotes": "Open source. No enforcement. Community-run",
     "verification": "Login via GitHub/Google/Twitter/Reddit. No email needed. Instant setup",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -9833,7 +9834,7 @@
     "banNotes": "No enforcement. Ephemeral tunnels",
     "verification": "No signup required. Just SSH: ssh -R 80:localhost:8080 nokey@localhost.run",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -9908,7 +9909,7 @@
     "banNotes": "No enforcement. Commonly used in security testing",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -9982,7 +9983,7 @@
     "banNotes": "Code execution is normal behavior. No abuse monitoring",
     "verification": "No account needed for pastes. Email for registered",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -10055,7 +10056,7 @@
     "banNotes": "E2E encrypted - host cannot read content. Self-hostable for full control",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -10129,7 +10130,7 @@
     "banNotes": "No enforcement",
     "verification": "No signup required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -10202,7 +10203,7 @@
     "banNotes": "Minimal content scanning. Files persist",
     "verification": "Email only. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -10276,7 +10277,7 @@
     "banNotes": "Adobe trusted platform. Shared pages rarely flagged",
     "verification": "Adobe account (email). Google/Apple SSO. No CC for free",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -10349,7 +10350,7 @@
     "banNotes": "Chinese platform. Western abuse reports unlikely to be actioned",
     "verification": "Email or phone. Chinese phone for some features",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -10418,7 +10419,7 @@
     "banNotes": "Less flagged than Bitly. Custom domains hide the shortener",
     "verification": "Email only. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -10491,7 +10492,7 @@
     "banNotes": "Minimal content moderation. Anonymous posts. Telegram-owned",
     "verification": "No signup required. Anonymous publishing. API available without auth",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": false,
@@ -10557,7 +10558,7 @@
     "banNotes": "Document sharing is normal business activity. Dropbox-owned",
     "verification": "Email only. Free trial 14 days. No CC initially",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": false,
@@ -10629,7 +10630,7 @@
     "banNotes": "Akamai/Linode abuse team exists but less aggressive than AWS",
     "verification": "Email + CC required",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "trial",
       "devAccount": true,
@@ -10720,7 +10721,7 @@
     "banNotes": "Mailchimp monitors sender reputation and content. Accounts suspended for phishing. Abuse reports processed",
     "verification": "Email only. No CC for free tier. Phone optional",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -10794,7 +10795,7 @@
     "banNotes": "Replit moderates content. Repls removed on abuse report. Free tier restricted in 2024+",
     "verification": "Email or Google/GitHub OAuth. No CC for free tier",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -10863,7 +10864,7 @@
     "banNotes": "Minimal abuse enforcement. Projects sleep after 5min inactivity on free tier",
     "verification": "Email or GitHub/Google/Facebook OAuth. No CC",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -10931,7 +10932,7 @@
     "banNotes": "Minimal content moderation. Developer platform",
     "verification": "Email or GitHub/Google OAuth. No CC for free",
     "trust": "low",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "freeTier": {
       "type": "free",
       "devAccount": true,
@@ -11008,7 +11009,7 @@
     "banNotes": "Zendesk allows unverified users to submit tickets by default. Mass email bombing via ticket creation hit Discord, Tinder, Dropbox, NordVPN, Riot Games and others (BleepingComputer Jan 2026). Platform response to abuse has been slow",
     "verification": "Email verification for trial account",
     "trust": "high",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "customDomain": true,
     "customDomainNotes": "Custom subdomains on all plans (yourcompany.zendesk.com). Custom host mapping to your own domain on paid plans",
     "dataRetention": "Permanent (trial data persists after expiry). Tickets, attachments, help center articles persist indefinitely on paid plans",
@@ -11135,7 +11136,7 @@
     "banNotes": "Milanote is a niche creative collaboration tool - most SOC teams don't monitor or block it. Low enforcement visibility",
     "verification": "Email verification",
     "trust": "medium",
-    "lastVerified": "2025-03",
+    "lastVerified": "2026-03",
     "customDomain": false,
     "customDomainNotes": "N/A",
     "dataRetention": "Permanent (free: 100 notes/images/links, 10 file uploads). Unlimited shared boards",
