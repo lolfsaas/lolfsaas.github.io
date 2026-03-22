@@ -6,7 +6,7 @@
 <title>LOLFSaaS - Living off Free SaaS</title>
 <link rel="icon" href="lolfsaas_logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style> 
+<style>
 :root {
   --bg:#06080c; --s:#0c1018; --s2:#141a24; --bd:#1a2030; --bdA:#dc2626;
   --tx:#e2e8f0; --txD:#a0aec0; --txM:#718096;
@@ -255,7 +255,7 @@ function render(){
                 <span style="font-size:12px;color:var(--txD)">${h(sel.provider)} · ${h(sel.category)} · <a href="${h(sel.url)}" target="_blank">${h(sel.url)} →</a></span>
               </div>
               <div style="display:flex;align-items:center;gap:6px">
-                <button onclick="navigator.clipboard.writeText('${shareUrl}');this.textContent='Copied!';setTimeout(()=>this.textContent='Share link',1500)" style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;border:1px solid var(--bd);background:var(--bg);color:var(--txD);cursor:pointer;font-size:9px" onmouseover="this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='var(--bd)';this.style.color='var(--txD)'">
+                <button onclick="navigator.clipboard.writeText('${shareUrl}');this.textContent='Copied!';setTimeout(()=>this.textContent='Share link',1500)" style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;border:1px solid var(--bd);background:var(--bg);color:var(--txD);cursor:pointer;font-size:9px;font-family:inherit" onmouseover="this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='var(--bd)';this.style.color='var(--txD)'">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
                   Share link</button>
                 <a href="${issueUrl}" target="_blank" style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;border:1px solid var(--bd);background:var(--bg);color:var(--txD);text-decoration:none;font-size:9px" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--bd)';this.style.color='var(--txD)'">
@@ -311,7 +311,7 @@ function render(){
                 <div style="font-size:10px;color:var(--txD)">${h(sel.logging||"No information")}</div>
               </div>
               <div class="panel-card">
-                <div class="panel-label">C2 FRAMEWORKS (${sel.knownC2.length})</div>
+                <div class="panel-label" style="display:flex;justify-content:space-between;align-items:center">C2 FRAMEWORKS (${sel.knownC2.length})${sel.lolc2Url?` <a href="${h(sel.lolc2Url)}" target="_blank" style="font-size:8px;color:var(--red);text-decoration:none;font-weight:400">View on lolc2 →</a>`:""}</div>
                 ${sel.knownC2.length?sel.knownC2.map(c=>`<div style="margin-bottom:3px"><a href="${h(c.url)}" target="_blank" style="font-size:10px;color:var(--red)">${h(c.name)} →</a></div>`).join(""):'<div style="font-size:10px;color:var(--txM)">No known C2 frameworks</div>'}
                 ${sel.exfilTools?.length?`<div class="panel-label" style="margin-top:8px">EXFIL TOOLS (${sel.exfilTools.length})</div>${sel.exfilTools.map(t=>`<div style="margin-bottom:3px"><a href="${h(t.url)}" target="_blank" style="font-size:10px;color:var(--orange)">${h(t.name)} →</a></div>`).join("")}`:""}
               </div>
@@ -340,7 +340,7 @@ function render(){
 
   // Bind search input
   const si=$("#searchInput");
-  if(si){si.addEventListener("input",e=>{state.search=e.target.value;render()});si.focus();si.setSelectionRange(si.value.length,si.value.length)}
+  if(si){si.addEventListener("input",e=>{state.search=e.target.value;render()});if(!state.sel&&window.innerWidth>768&&document.activeElement!==si){si.focus();si.setSelectionRange(si.value.length,si.value.length)}}
 }
 
 // Keyboard: ESC to close overlay
