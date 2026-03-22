@@ -11107,7 +11107,7 @@
       "DOMAIN: *.zendesk.com/requests/new (anonymous ticket submission endpoint)",
       "DOMAIN: zdassets.com, zopim.com (Zendesk CDN and chat widget domains)",
       "ALLOWLIST LOGIC: maintain a list of known/approved Zendesk tenant subdomains for your org - alert on connections to ANY other *.zendesk.com tenant",
-      "HIGH PRIORITY: alert on authentication attempts from domains matching [anything]zendesk[.]com - ShinyHunters March 2026 campaign uses [brandname]zendesk[.]com pattern with valid TLS certs (60+ domains identified by ReliaQuest)",
+      "HIGH PRIORITY: alert on user web traffic or email links pointing to domains matching [brandname]zendesk[.]com that are NOT *.zendesk.com - ShinyHunters March 2026 phishing campaign uses this pattern with valid TLS certs to impersonate brands' support portals (60+ domains identified by ReliaQuest)",
       "DNS: monitor for newly registered domains containing 'zendesk' that are NOT *.zendesk.com subdomains - these are impersonation domains targeting credential harvesting",
       "DNS: typosquatted Zendesk domains (e.g. znedesk.com, vpn-zendesk.com) - 40+ registered Nov 2025 + 60+ registered Jan-March 2026 via NiceNic/Cloudflare by ShinyHunters",
       "EMAIL: ticket confirmation emails from Zendesk instances your org does not use - these originate from the customer's domain, not zendesk.com",
