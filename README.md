@@ -6,7 +6,7 @@
 <h3 align="center">Living off Free SaaS</h3>
 
 <p align="center">
-  A curated directory of <b>125 SaaS platforms</b> with free tiers, documenting abuse surface, OPSEC profiles, detection patterns, C2 framework mappings, and operational limits for security research.
+  A curated directory of <b>127 SaaS platforms</b> with free tiers, documenting abuse surface, OPSEC profiles, detection patterns, C2 framework mappings, and operational limits for security research.
 </p>
 
 <p align="center">
@@ -14,10 +14,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Platforms-125-3b82f6?style=flat-square" alt="Platforms">
+  <img src="https://img.shields.io/badge/Platforms-127-3b82f6?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/C2_Frameworks-124-dc2626?style=flat-square" alt="C2">
   <img src="https://img.shields.io/badge/Exfil_Tools-122-f97316?style=flat-square" alt="Exfil">
-  <img src="https://img.shields.io/badge/References-284-a78bfa?style=flat-square" alt="References">
+  <img src="https://img.shields.io/badge/References-306-a78bfa?style=flat-square" alt="References">
   <img src="https://img.shields.io/badge/Categories-11-eab308?style=flat-square" alt="Categories">
 </p>
 
@@ -37,7 +37,7 @@ LOLFSaaS provides structured, per-platform intelligence across **30+ fields** so
 - Does the platform log my activity? Will a SOC flag it? How fast will I get banned?
 - Can I bring my own domain? Does it support domain fronting or CDN redirection?
 
-Every entry is cross-referenced with [lolc2](https://lolc2.github.io), [lolexfil](https://lolexfil.github.io), and the [LOTS Project](https://lots-project.com), and backed by **284 references** from threat intelligence reports and security research.
+Every entry is cross-referenced with [lolc2](https://lolc2.github.io), [lolexfil](https://lolexfil.github.io), and the [LOTS Project](https://lots-project.com), and backed by **306 references** from threat intelligence reports and security research.
 
 ---
 
@@ -45,16 +45,16 @@ Every entry is cross-referenced with [lolc2](https://lolc2.github.io), [lolexfil
 
 | Metric | Count |
 |:---|---:|
-| Total platforms | 125 |
-| Trusted domains | 79 |
+| Total platforms | 127 |
+| Trusted domains | 81 |
 | Zero-signup services | 19 |
-| Custom domain support | 42 |
+| Custom domain support | 43 |
 | Domain fronting / CDN redirection | 6 |
 | C2 framework implementations linked | 124 |
 | Exfiltration tool mappings | 122 |
-| Platforms with detection patterns | 69 |
-| MITRE ATT&CK mappings | 125 |
-| Threat intel references | 284 |
+| Platforms with detection patterns | 127 |
+| MITRE ATT&CK mappings | 127 |
+| Threat intel references | 306 |
 
 ---
 
@@ -66,11 +66,11 @@ Every entry is cross-referenced with [lolc2](https://lolc2.github.io), [lolexfil
 |:---|---:|:---|
 | C2 Channel | 43 | Telegram, Discord, Slack, Teams, Graph API, Notion, Airtable, OpenAI |
 | Cloud | 19 | AWS, Azure, GCP, Cloudflare, Vercel, Netlify, Render, Firebase, Supabase |
-| Phishing | 17 | Google Forms/Sites, DocuSign, Canva, Loom, Calendly, LinkedIn, Figma |
+| Phishing | 18 | Google Forms/Sites, DocuSign, Canva, Loom, Calendly, LinkedIn, Figma, Milanote |
 | Storage | 14 | Mega, Box, Wasabi, Backblaze B2, GoFile, Mediafire, iCloud, Filebin |
 | Paste | 7 | Pastebin, Rentry.co, ZeroBin/PrivateBin, Termbin, paste.ee, Sprunge |
+| Business App | 7 | Salesforce, ServiceNow, HubSpot, ClickUp, Trello, Evernote, Zendesk |
 | DevOps | 6 | GitHub, GitLab, Bitbucket, Azure DevOps, Gitee, Codepen |
-| Business App | 6 | Salesforce, ServiceNow, HubSpot, ClickUp, Trello, Evernote |
 | Email | 5 | SendGrid, Amazon SES, Twilio, Mailgun, Mailchimp |
 | Website Builder | 3 | Wix, WordPress.com, Webflow |
 | Redirector | 3 | Bitly, TinyURL, Rebrandly |
