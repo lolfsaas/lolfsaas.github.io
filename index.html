@@ -135,7 +135,7 @@ function render(){
   <header style="text-align:center;margin-bottom:28px">
     <h1 style="font-family:var(--mono);font-size:26px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em">Living off <span style="color:var(--red)">Free SaaS</span></h1>
     <p style="color:var(--txD);font-size:12px;max-width:750px;margin:0 auto 16px;line-height:1.6">
-      Comprehensive directory of Free SaaS platforms - with known C2 frameworks, exfiltration tools, MITRE ATT&amp;CK mappings, OPSEC ratings, API endpoints, free tier limits, detection patterns, SSO data, and official documentation.
+      Comprehensive directory of Free SaaS platforms - with known C2 frameworks, exfiltration tools, MITRE ATT&amp;CK mappings, OPSEC ratings, API endpoints, free tier limits, detection logics, SSO data, and official documentation.
       Cross-referenced with <a href="https://lolc2.github.io" target="_blank">lolc2</a> and <a href="https://lolexfil.github.io" target="_blank">lolexfil</a>.
     </p>
     <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap">
@@ -319,12 +319,12 @@ function render(){
               </div>
             </div>
             <div style="margin-top:12px">
-              <div class="panel-label">NOTES & REFERENCES</div>
-              <p style="font-size:11px;color:var(--tx);margin:0 0 8px;line-height:1.6">${h(sel.notes)}</p>
-              ${sel.mitre?.length?`<div style="margin-bottom:6px">${sel.mitre.map(m=>`<a href="https://attack.mitre.org/techniques/${m.replace(".","/")}" target="_blank" style="display:inline-block;padding:1px 5px;border-radius:2px;background:rgba(167,139,250,0.1);color:var(--purple);border:1px solid rgba(167,139,250,0.2);font-size:9px;margin:0 3px 3px 0">${h(m)}</a>`).join("")}</div>`:""}
-              ${sel.refs?.length?`<div>${sel.refs.map(r=>`<div style="margin-bottom:3px"><a href="${h(r.url)}" target="_blank" style="font-size:10px;color:var(--txD)">${h(r.title)} →</a></div>`).join("")}</div>`:""}
-              ${sel.detection?.length?`<div style="margin-top:6px"><span class="panel-label">DETECTION PATTERNS</span><div style="font-size:9px;color:var(--orange)">${sel.detection.map(d=>h(d)).join(" · ")}</div></div>`:""}
-              ${sel.apiEndpoints?.length?`<div style="margin-top:6px"><span class="panel-label">API ENDPOINTS</span><div style="font-size:9px;color:var(--cyan)">${sel.apiEndpoints.map(d=>h(d)).join(" · ")}</div></div>`:""}
+              <div class="panel-label">NOTES</div>
+              <div style="font-size:11px;color:var(--tx);margin:0 0 8px;line-height:1.7">${(()=>{const n=h(sel.notes);const sentences=n.split(/\.\s+(?=[A-Z0-9])/).filter(s=>s.trim());if(sentences.length<=2)return'<p style="margin:0">'+n+'</p>';return '<ul style="margin:0;padding-left:16px;list-style:none">'+sentences.map(s=>'<li style="margin-bottom:4px;position:relative;padding-left:10px"><span style="position:absolute;left:0;color:var(--txM)">-</span>'+s.trim().replace(/\.$/,'')+'</li>').join('')+'</ul>'})()}</div>
+              ${sel.mitre?.length?`<div style="margin-bottom:6px"><span class="panel-label" style="margin-bottom:4px;display:block">MITRE ATT&CK</span>${sel.mitre.map(m=>`<a href="https://attack.mitre.org/techniques/${m.replace(".","/")}" target="_blank" style="display:inline-block;padding:1px 5px;border-radius:2px;background:rgba(167,139,250,0.1);color:var(--purple);border:1px solid rgba(167,139,250,0.2);font-size:9px;margin:0 3px 3px 0">${h(m)}</a>`).join("")}</div>`:""}
+              ${sel.detection?.length?`<div style="margin-top:6px"><span class="panel-label" style="margin-bottom:4px;display:block">DETECTION LOGICS</span><div style="display:flex;flex-direction:column;gap:3px">${sel.detection.map(d=>`<div style="font-size:9px;color:var(--orange);padding:3px 6px;background:rgba(249,115,22,0.06);border-left:2px solid rgba(249,115,22,0.3);border-radius:0 2px 2px 0;line-height:1.4">${h(d)}</div>`).join("")}</div></div>`:""}
+              ${sel.apiEndpoints?.length?`<div style="margin-top:6px"><span class="panel-label" style="margin-bottom:4px;display:block">API ENDPOINTS</span><div style="display:flex;flex-direction:column;gap:2px">${sel.apiEndpoints.map(d=>`<div style="font-size:9px;color:var(--cyan);padding:2px 6px;background:rgba(6,182,212,0.06);border-left:2px solid rgba(6,182,212,0.3);border-radius:0 2px 2px 0">${h(d)}</div>`).join("")}</div></div>`:""}
+              ${sel.refs?.length?`<div style="margin-top:8px"><span class="panel-label" style="margin-bottom:4px;display:block">REFERENCES (${sel.refs.length})</span>${sel.refs.map(r=>`<div style="margin-bottom:3px"><a href="${h(r.url)}" target="_blank" style="font-size:10px;color:var(--txD)">${h(r.title)} →</a></div>`).join("")}</div>`:""}
             </div>
           </div>
         </div>
